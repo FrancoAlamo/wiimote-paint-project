@@ -6,3 +6,5 @@ C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projec
 C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Debug\PaintProgram.csproj.GenerateResource.Cache
 C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Debug\PaintProgram.exe
 C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Debug\PaintProgram.pdb
+C:\Documents and Settings\Brandt\Desktop\Spring 2008 Courses\EE 464\Test\WiimotePaint\obj\Debug\PaintProgram.exe
+C:\Documents and Settings\Brandt\Desktop\Spring 2008 Courses\EE 464\Test\WiimotePaint\obj\Debug\PaintProgram.pdb
