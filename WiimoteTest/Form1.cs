@@ -6,7 +6,7 @@
 //  Visit http://msdn.microsoft.com/coding4fun/hardware/article.aspx?articleid=1879033
 //  for more information
 //////////////////////////////////////////////////////////////////////////////////
-
+//Test Code
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
