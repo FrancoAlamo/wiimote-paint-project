@@ -1,0 +1,8 @@
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\bin\Release\PaintProgram.exe
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\bin\Release\PaintProgram.pdb
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Release\PaintProgram.Form1.resources
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Release\PaintProgram.Properties.Resources.resources
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Release\PaintProgram.csproj.GenerateResource.Cache
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Release\PaintProgram.exe
+C:\Documents and Settings\EE464\Local Settings\Application Data\Temporary Projects\PaintProgram\obj\Release\PaintProgram.pdb
