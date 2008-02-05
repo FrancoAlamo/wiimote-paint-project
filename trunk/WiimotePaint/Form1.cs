@@ -35,5 +35,22 @@ namespace PaintProgram
         {
             colorDialog1.ShowDialog();
         }
+
+        private void Open_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+        }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            openFileDialog1.OpenFile();
+            openFileDialog1.
+        }
+
     }
 }

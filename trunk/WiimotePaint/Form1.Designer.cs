@@ -38,13 +38,15 @@
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +58,7 @@
             this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(518, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(610, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -74,12 +76,14 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -96,25 +100,25 @@
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.selectAllToolStripMenuItem.Text = "Select All";
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // groupbox1
@@ -129,43 +133,6 @@
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Info;
-            this.panel1.Location = new System.Drawing.Point(83, 28);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(317, 234);
-            this.panel1.TabIndex = 2;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.groupBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.groupBox2.Location = new System.Drawing.Point(66, 18);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(401, 339);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(32, 24);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "click";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(35, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(32, 24);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -185,11 +152,53 @@
             this.button4.Text = "button4";
             this.button4.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(35, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(32, 24);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1, 8);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(32, 24);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "click";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.Info;
+            this.panel1.Location = new System.Drawing.Point(83, 28);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(317, 234);
+            this.panel1.TabIndex = 2;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.groupBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.groupBox2.Location = new System.Drawing.Point(66, 18);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(401, 339);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 419);
+            this.ClientSize = new System.Drawing.Size(610, 466);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupbox1);
@@ -225,6 +234,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
