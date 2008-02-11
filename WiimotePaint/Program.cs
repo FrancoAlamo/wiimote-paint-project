@@ -15,7 +15,14 @@ namespace PaintProgram
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            try
+            {
+                Application.Run(new Form1());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("{0} Caught exception #1.", e);
+            }
         }
     }
 }

@@ -5,25 +5,32 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace PaintProgram
 {
+    
     public partial class Form1 : Form
     {
+        public static int k = 0;
+        
         public Form1()
         {
             InitializeComponent();
+            
+                
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //  Open_Click.Enabled = false;
-           // btn_save.Enabled = false;
+            
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
+                
 
         }
 
@@ -38,33 +45,40 @@ namespace PaintProgram
             
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
         private void Open_Click(object sender, EventArgs e)
         {
+            string CurrentFile;
+            Image img;
+            openFileDialog1.Title = "Open Image File";
             openFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             openFileDialog1.AddExtension = true;
-            openFileDialog1.DefaultExt = "jpg";
+            openFileDialog1.DefaultExt = "bmp";
             openFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg,*.jpeg)|*.jpg;*.jpeg||";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.FileName = "";
             openFileDialog1.ShowDialog();
-            Bitmap grays = (Bitmap)pb_color.Image;
-            try
-            {
-                int width = grays.Size.Width;
-                int height = grays.Size.Height;
-            }
-            catch(Exception e) { }
-            for (int j = 0; j < height; j++)
-            {
+            
 
-                for (int i = 0; i < width; i++)
-                {
+            if (openFileDialog1.FileName == "")
+                return;
+            
 
-                    Color col;
-                    col = grays.GetPixel(i, j);
-                    grays.SetPixel(i, j, Color.FromArgb((col.R + col.G + col.B) / 3, (col.R + col.G + col.B) / 3, (col.R + col.G + col.B) / 3));
-                }
-
-            }
-            //pb_color.Image = grays; 
+            pb_color.SizeMode = PictureBoxSizeMode.StretchImage;
+            CurrentFile = openFileDialog1.FileName.ToString();
+            img = Image.FromFile(openFileDialog1.FileName);
+            pb_color.Image = img;
+            pb_color.ClientSize = new Size((img.Width/2), (img.Height/2));
+            //pb_color.Image = (Image) img;
+            pb_color.Height = img.Height/2;
+            pb_color.Width = img.Width/2;
+            panel1.Height = img.Height/2;
+            panel1.Width = img.Width/2;
+ 
         }
 
         private void btn_load_Click(object sender, System.EventArgs e)
@@ -94,7 +108,12 @@ namespace PaintProgram
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
+            fileToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
+            editToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
 
+
+
+            
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -107,6 +126,8 @@ namespace PaintProgram
         {
 
         }
+
+        
 
 
     }
