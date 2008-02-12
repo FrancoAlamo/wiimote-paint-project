@@ -46,12 +46,14 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.pb_color = new System.Windows.Forms.PictureBox();
+            this.pb_image = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pb_image2 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_color)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -157,6 +159,7 @@
             this.button4.TabIndex = 1;
             this.button4.Text = "button4";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button2
             // 
@@ -197,25 +200,37 @@
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
-            // pb_color
+            // pb_image
             // 
-            this.pb_color.Location = new System.Drawing.Point(0, 0);
-            this.pb_color.Name = "pb_color";
-            this.pb_color.Size = new System.Drawing.Size(296, 215);
-            this.pb_color.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pb_color.TabIndex = 0;
-            this.pb_color.TabStop = false;
-            this.pb_color.Click += new System.EventHandler(this.pb_color_Click);
+            this.pb_image.Location = new System.Drawing.Point(0, 0);
+            this.pb_image.Name = "pb_image";
+            this.pb_image.Size = new System.Drawing.Size(296, 215);
+            this.pb_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb_image.TabIndex = 0;
+            this.pb_image.TabStop = false;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel1.Controls.Add(this.pb_color);
+            this.panel1.Controls.Add(this.pb_image2);
+            this.panel1.Controls.Add(this.pb_image);
             this.panel1.Location = new System.Drawing.Point(83, 28);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 234);
             this.panel1.TabIndex = 2;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // pb_image2
+            // 
+            this.pb_image2.Location = new System.Drawing.Point(0, 0);
+            this.pb_image2.Name = "pb_image2";
+            this.pb_image2.Size = new System.Drawing.Size(296, 215);
+            this.pb_image2.TabIndex = 0;
+            this.pb_image2.TabStop = false;
+            this.pb_image2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseMove);
+            this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
+            this.pb_image2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseDown);
+            this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
             // 
             // Form1
             // 
@@ -233,8 +248,9 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupbox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pb_color)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,8 +276,9 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.PictureBox pb_color;
+        private System.Windows.Forms.PictureBox pb_image;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox pb_image2;
     }
 }
 
