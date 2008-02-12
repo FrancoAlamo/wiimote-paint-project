@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using WiimoteLib;
 
 namespace PaintProgram
 {
     class graphicsLib
     {
         int x_dim=640, y_dim=480;
+        float scale_x, scale_y;
         Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
         Graphics g;
 
@@ -30,25 +33,19 @@ namespace PaintProgram
             y_dim = y;
         }
 
-        public Bitmap drawCursorPoints(int x1, int y1)
+        public Bitmap drawCursorPoints(WiimoteState ws)
         {
-
-        }
-
-        public Bitmap drawCursorPoints(int x1, int y1, int x2, int y2)
-        {
-
-        }
-
-        public Bitmap drawCursorPoints(int x1, int y1, int x2, int y2, int x2, int y2)
-        {
-
-        }
-
-        public Bitmap drawCursorPoints(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
-        {
-
-        }
+            if (ws.IRState.Found1)
+                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1 / 4), (int)(ws.IRState.RawY1 / 4), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
+            if (ws.IRState.Found2)
+                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2 / 4), (int)(ws.IRState.RawY2 / 4), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
+            if (ws.IRState.Found3)
+                g.DrawEllipse(new Pen(Color.Yellow), (int)(ws.IRState.RawX3 / 4), (int)(ws.IRState.RawY3 / 4), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
+            if (ws.IRState.Found4)
+                g.DrawEllipse(new Pen(Color.Orange), (int)(ws.IRState.RawX4 / 4), (int)(ws.IRState.RawY4 / 4), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
+            if (ws.IRState.Found1 && ws.IRState.Found2)
+                g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX / 4), (int)(ws.IRState.RawMidY / 4), 2, 2);
+        }        
 
     }
 }
