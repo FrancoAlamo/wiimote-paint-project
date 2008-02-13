@@ -28,20 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Fill_btn = new System.Windows.Forms.Button();
+            this.Magnify_btn = new System.Windows.Forms.Button();
+            this.Eraser_btn = new System.Windows.Forms.Button();
+            this.Cut_btn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -49,6 +58,9 @@
             this.pb_image = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pb_image2 = new System.Windows.Forms.PictureBox();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_image)).BeginInit();
@@ -61,7 +73,9 @@
             this.menuStrip1.BackColor = System.Drawing.Color.Black;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.viewToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(610, 24);
@@ -72,7 +86,10 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.saveToolStripMenuItem});
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.printToolStripMenuItem,
+            this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
@@ -81,16 +98,37 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // printToolStripMenuItem
+            // 
+            this.printToolStripMenuItem.Name = "printToolStripMenuItem";
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.printToolStripMenuItem.Text = "Print";
+            this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.quitToolStripMenuItem.Text = "Exit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -129,57 +167,97 @@
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.BackColor = System.Drawing.Color.Black;
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zoomInToolStripMenuItem,
+            this.zoomOutToolStripMenuItem});
+            this.viewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // zoomInToolStripMenuItem
+            // 
+            this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.zoomInToolStripMenuItem.Text = "Zoom in";
+            // 
+            // zoomOutToolStripMenuItem
+            // 
+            this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.zoomOutToolStripMenuItem.Text = "Zoom out";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // groupbox1
             // 
-            this.groupbox1.Controls.Add(this.button3);
-            this.groupbox1.Controls.Add(this.button4);
-            this.groupbox1.Controls.Add(this.button2);
-            this.groupbox1.Controls.Add(this.button1);
+            this.groupbox1.Controls.Add(this.Fill_btn);
+            this.groupbox1.Controls.Add(this.Magnify_btn);
+            this.groupbox1.Controls.Add(this.Eraser_btn);
+            this.groupbox1.Controls.Add(this.Cut_btn);
             this.groupbox1.Location = new System.Drawing.Point(8, 16);
             this.groupbox1.Name = "groupbox1";
-            this.groupbox1.Size = new System.Drawing.Size(70, 347);
+            this.groupbox1.Size = new System.Drawing.Size(75, 341);
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // button3
+            // Fill_btn
             // 
-            this.button3.Location = new System.Drawing.Point(36, 35);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(32, 24);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.Fill_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Fill_btn.BackgroundImage")));
+            this.Fill_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Fill_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Fill_btn.Location = new System.Drawing.Point(38, 38);
+            this.Fill_btn.Name = "Fill_btn";
+            this.Fill_btn.Size = new System.Drawing.Size(37, 31);
+            this.Fill_btn.TabIndex = 0;
+            this.Fill_btn.UseVisualStyleBackColor = true;
+            this.Fill_btn.MouseHover += new System.EventHandler(this.Fill_btn_MouseHover);
             // 
-            // button4
+            // Magnify_btn
             // 
-            this.button4.Location = new System.Drawing.Point(2, 35);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(32, 24);
-            this.button4.TabIndex = 1;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.Magnify_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Magnify_btn.BackgroundImage")));
+            this.Magnify_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Magnify_btn.Location = new System.Drawing.Point(38, 7);
+            this.Magnify_btn.Name = "Magnify_btn";
+            this.Magnify_btn.Size = new System.Drawing.Size(37, 31);
+            this.Magnify_btn.TabIndex = 0;
+            this.Magnify_btn.UseVisualStyleBackColor = true;
+            this.Magnify_btn.Click += new System.EventHandler(this.button4_Click);
+            this.Magnify_btn.MouseHover += new System.EventHandler(this.Magnify_btn_MouseHover);
             // 
-            // button2
+            // Eraser_btn
             // 
-            this.button2.Location = new System.Drawing.Point(35, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(32, 24);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Eraser_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Eraser_btn.BackgroundImage")));
+            this.Eraser_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Eraser_btn.Location = new System.Drawing.Point(1, 38);
+            this.Eraser_btn.Name = "Eraser_btn";
+            this.Eraser_btn.Size = new System.Drawing.Size(37, 31);
+            this.Eraser_btn.TabIndex = 0;
+            this.Eraser_btn.UseVisualStyleBackColor = true;
+            this.Eraser_btn.Click += new System.EventHandler(this.button2_Click);
+            this.Eraser_btn.MouseHover += new System.EventHandler(this.Eraser_btn_MouseHover);
             // 
-            // button1
+            // Cut_btn
             // 
-            this.button1.Location = new System.Drawing.Point(1, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(32, 24);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "click";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Cut_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Cut_btn.Image = ((System.Drawing.Image)(resources.GetObject("Cut_btn.Image")));
+            this.Cut_btn.Location = new System.Drawing.Point(1, 7);
+            this.Cut_btn.Name = "Cut_btn";
+            this.Cut_btn.Size = new System.Drawing.Size(37, 31);
+            this.Cut_btn.TabIndex = 0;
+            this.Cut_btn.UseVisualStyleBackColor = true;
+            this.Cut_btn.Click += new System.EventHandler(this.button1_Click);
+            this.Cut_btn.MouseHover += new System.EventHandler(this.Cut_btn_MouseHover);
             // 
             // groupBox2
             // 
@@ -187,7 +265,7 @@
             this.groupBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.groupBox2.Location = new System.Drawing.Point(66, 18);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(401, 339);
+            this.groupBox2.Size = new System.Drawing.Size(452, 339);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
@@ -214,7 +292,7 @@
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.panel1.Controls.Add(this.pb_image2);
             this.panel1.Controls.Add(this.pb_image);
-            this.panel1.Location = new System.Drawing.Point(83, 28);
+            this.panel1.Location = new System.Drawing.Point(92, 28);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 234);
             this.panel1.TabIndex = 2;
@@ -232,6 +310,14 @@
             this.pb_image2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseDown);
             this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
             // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,6 +331,7 @@
             this.Name = "Form1";
             this.Text = "WiiPaint";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupbox1.ResumeLayout(false);
@@ -269,16 +356,26 @@
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupbox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button Eraser_btn;
+        private System.Windows.Forms.Button Cut_btn;
+        private System.Windows.Forms.Button Fill_btn;
+        private System.Windows.Forms.Button Magnify_btn;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.PictureBox pb_image;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pb_image2;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoomInToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoomOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.PrintDialog printDialog1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
