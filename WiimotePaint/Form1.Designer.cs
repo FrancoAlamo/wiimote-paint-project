@@ -200,13 +200,13 @@
             // 
             // groupbox1
             // 
+            this.groupbox1.Controls.Add(this.Cut_btn);
+            this.groupbox1.Controls.Add(this.Eraser_btn);
             this.groupbox1.Controls.Add(this.Fill_btn);
             this.groupbox1.Controls.Add(this.Magnify_btn);
-            this.groupbox1.Controls.Add(this.Eraser_btn);
-            this.groupbox1.Controls.Add(this.Cut_btn);
             this.groupbox1.Location = new System.Drawing.Point(8, 16);
             this.groupbox1.Name = "groupbox1";
-            this.groupbox1.Size = new System.Drawing.Size(75, 341);
+            this.groupbox1.Size = new System.Drawing.Size(77, 341);
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
