@@ -57,8 +57,8 @@ namespace PaintProgram
             Graphics g;
             g = Graphics.FromImage(b);
             g.DrawEllipse(new Pen(Color.Orange), 200, 200, 300, 200);
-            pb_image2.Image = b;
-            pb_image.BackgroundImage = pb_image2.Image;
+            pb_image.Image = b;
+           // pb_image.BackgroundImage = pb_image2.Image;
         }
 
         private void Open_Click(object sender, EventArgs e)
@@ -111,20 +111,24 @@ namespace PaintProgram
             saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg||";
             saveFileDialog1.OverwritePrompt = true;
             saveFileDialog1.ShowDialog();
+
+
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             openFileDialog1.OpenFile();
+
             
         }
+
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             fileToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             editToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-
-
+            viewToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
+            aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
 
             
         }
@@ -159,8 +163,8 @@ namespace PaintProgram
 
             Point current_pos = Control.MousePosition;
             //pb_image2.Region.Translate((current_pos.X - mouse_pos.X), (current_pos.Y - mouse_pos.Y));
-            current_pos.X = current_pos.X - mouse_pos.X; //add this current_pos.Y = current_pos.Y - mouse_pos.Y; //add this
-            current_pos.Y = current_pos.Y - mouse_pos.Y;
+            current_pos.X = (mouse_pos.X/6) - (current_pos.X/6); //add this current_pos.Y = current_pos.Y - mouse_pos.Y; //add this
+            current_pos.Y = (mouse_pos.Y/6) - (current_pos.Y/6);
             pb_image2.Location = current_pos;
         }
 
@@ -173,17 +177,82 @@ namespace PaintProgram
         {
             if (mouse_is_down)
             {
-                Point current_pos = Control.MousePosition;
+             //   Point current_pos = Control.MousePosition;
                 //pb_image2.Region.Translate((current_pos.X - mouse_pos.X), (current_pos.Y - mouse_pos.Y));
-                current_pos.X = current_pos.X - mouse_pos.X; //add this current_pos.Y = current_pos.Y - mouse_pos.Y; //add this
-                this.Location = current_pos;
+             //   current_pos.X = current_pos.X - mouse_pos.X; //add this current_pos.Y = current_pos.Y - mouse_pos.Y; //add this
+             //   this.Location = current_pos;
             }
         }
 
         private void pb_image2_MouseDown(object sender, MouseEventArgs e)
         {
-            mouse_pos.X = e.X;
-            mouse_pos.Y = e.Y;
+            while (mouse_is_down)
+            {
+                mouse_pos.X = e.X;
+                mouse_pos.Y = e.Y;
+            }
+        }
+
+ 
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 about = new AboutBox1();
+            about.ShowDialog();
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            printDialog1.ShowDialog();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
+            saveFileDialog1.AddExtension = true;
+            saveFileDialog1.DefaultExt = "jpg";
+            saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg||";
+            saveFileDialog1.OverwritePrompt = true;
+            saveFileDialog1.FileName = "";
+            saveFileDialog1.ShowDialog();
+
+            if (saveFileDialog1.FileName == "")
+                return;
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void Cut_btn_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(this.Cut_btn, "Cut Tool");
+            
+        }
+
+        private void Magnify_btn_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(this.Magnify_btn, "Magnify Tool");
+        }
+
+        private void Eraser_btn_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(this.Eraser_btn, "Eraser Tool");
+        }
+
+        private void Fill_btn_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(this.Fill_btn, "Fill Tool");
         }
 
         
