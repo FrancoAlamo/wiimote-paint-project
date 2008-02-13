@@ -16,3 +16,4 @@ C:\Documents and Settings\EE464\Desktop\EE464 Wiimote Project\WiimotePaint\obj\D
 C:\Documents and Settings\EE464\Desktop\EE464 Wiimote Project\WiimotePaint\obj\Debug\PaintProgram.Form1.resources
 C:\Documents and Settings\EE464\Desktop\EE464 Wiimote Project\WiimotePaint\obj\Debug\PaintProgram.Properties.Resources.resources
 C:\Documents and Settings\EE464\Desktop\EE464 Wiimote Project\WiimotePaint\obj\Debug\PaintProgram.csproj.GenerateResource.Cache
+C:\Documents and Settings\EE464\Desktop\EE464 Wiimote Project\WiimotePaint\obj\Debug\PaintProgram.AboutBox1.resources

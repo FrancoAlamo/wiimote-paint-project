@@ -90,6 +90,7 @@ namespace PaintProgram
             panel1.Height = b.Height/2;
             panel1.Width = b.Width/2;
             panel1.CreateGraphics();
+            
  
         }
 
@@ -153,8 +154,7 @@ namespace PaintProgram
 
         private void button4_Click(object sender, EventArgs e)
         {
-            DragDropEffects ok = new DragDropEffects();
-            pb_image.DoDragDrop(pb_image, ok);
+            
         }
 
         private void pb_image2_MouseClick(object sender, MouseEventArgs e)
@@ -253,6 +253,7 @@ namespace PaintProgram
         private void Fill_btn_MouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip(this.Fill_btn, "Fill Tool");
+            
         }
 
         
