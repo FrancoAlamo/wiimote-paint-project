@@ -5,6 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Collections.Specialized;
+using System.Reflection;
+using System.IO;
+using System.Resources;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -15,12 +19,13 @@ namespace PaintProgram
     public partial class Form1 : Form
     {
         public static int k = 0;
-        public static int erasersize_x, erasersize_y;
+        public static int erasersize_x, erasersize_y; // Depending on what size eraser they choose, sets width and height
         private bool mouse_is_down = false;
         private Point mouse_pos;
+        string CurrentFile; // Takes the path from the currently saved or opened file
         Image img;
-        Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb);
-        Graphics eraser;
+        Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
+        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
         
         public Form1()
         {
@@ -60,7 +65,7 @@ namespace PaintProgram
 
         private void Open_Click(object sender, EventArgs e)
         {
-            string CurrentFile;
+            
             openFileDialog1.Title = "Open Image File";
             openFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             openFileDialog1.AddExtension = true;
@@ -106,13 +111,22 @@ namespace PaintProgram
 
         private void Save_Click(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
+            
+            saveFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             saveFileDialog1.AddExtension = true;
             saveFileDialog1.DefaultExt = "jpg";
-            saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg||";
+            saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg;*.jpeg||";
             saveFileDialog1.OverwritePrompt = true;
-            saveFileDialog1.ShowDialog();
-
+            saveFileDialog1.FileName = "";
+            if (CurrentFile == "")
+            {
+                saveFileDialog1.ShowDialog();
+                CurrentFile = saveFileDialog1.FileName.ToString();
+            }
+            //pb_image2. = pb_image.BindingContext;
+            pb_image2.Image.Save(CurrentFile);
+            
+            
 
         }
 
@@ -130,7 +144,7 @@ namespace PaintProgram
             editToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             viewToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-
+            
 
             
         }
@@ -225,13 +239,16 @@ namespace PaintProgram
             saveFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             saveFileDialog1.AddExtension = true;
             saveFileDialog1.DefaultExt = "jpg";
-            saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg||";
+            saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg;*.jpeg||";
             saveFileDialog1.OverwritePrompt = true;
             saveFileDialog1.FileName = "";
             saveFileDialog1.ShowDialog();
 
             if (saveFileDialog1.FileName == "")
                 return;
+            CurrentFile = saveFileDialog1.FileName.ToString();
+            pb_image2.Image.Save(CurrentFile);
+
         }
 
         private void toolTip1_Popup(object sender, PopupEventArgs e)
@@ -266,7 +283,7 @@ namespace PaintProgram
       //      Color chosen;
       //      colorDialog1.ShowDialog();
       //      chosen = colorDialog1.Color;
-
+            eraser_box.Visible = false;
             try
             {
                 // Retrieve the image.
@@ -321,11 +338,12 @@ namespace PaintProgram
 
         private void Magnify_btn_Click(object sender, EventArgs e)
         {
-            Font f = new Font(new FontFamily("Times New Roman"), 10);
-            SolidBrush bT = new SolidBrush(Color.Black);
+            //Font f = new Font(new FontFamily("Times New Roman"), 10);
+            //SolidBrush bT = new SolidBrush(Color.Black);
             //Graphics g = Graphics.FromHwnd(this.Handle);  // <=> g = CreateGraphics();
-            Graphics g = Graphics.FromHwndInternal(this.Handle);
+            //Graphics g = Graphics.FromHwndInternal(this.Handle);
             eraser_box.Visible = false;
+            
             
         }
 
