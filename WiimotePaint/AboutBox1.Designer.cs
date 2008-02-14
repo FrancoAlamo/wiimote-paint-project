@@ -74,7 +74,7 @@
             this.logoPictureBox.Name = "logoPictureBox";
             this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
             this.logoPictureBox.Size = new System.Drawing.Size(168, 331);
-            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
             // 
