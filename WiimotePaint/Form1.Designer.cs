@@ -47,9 +47,9 @@
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
-            this.eraser2_panel = new System.Windows.Forms.Panel();
             this.eraser_box = new System.Windows.Forms.GroupBox();
             this.eraser1_panel = new System.Windows.Forms.Panel();
+            this.eraser2_panel = new System.Windows.Forms.Panel();
             this.eraser4_panel = new System.Windows.Forms.Panel();
             this.eraser3_panel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -106,35 +106,37 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // printToolStripMenuItem
             // 
             this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.quitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.quitToolStripMenuItem.Text = "Exit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -220,17 +222,6 @@
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // eraser2_panel
-            // 
-            this.eraser2_panel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("eraser2_panel.BackgroundImage")));
-            this.eraser2_panel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.eraser2_panel.Location = new System.Drawing.Point(13, 36);
-            this.eraser2_panel.Name = "eraser2_panel";
-            this.eraser2_panel.Size = new System.Drawing.Size(25, 20);
-            this.eraser2_panel.TabIndex = 0;
-            this.eraser2_panel.Visible = false;
-            this.eraser2_panel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.eraser2_panel_MouseClick);
-            // 
             // eraser_box
             // 
             this.eraser_box.Controls.Add(this.eraser1_panel);
@@ -256,6 +247,17 @@
             this.eraser1_panel.TabIndex = 0;
             this.eraser1_panel.Visible = false;
             this.eraser1_panel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.eraser1_panel_MouseClick);
+            // 
+            // eraser2_panel
+            // 
+            this.eraser2_panel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("eraser2_panel.BackgroundImage")));
+            this.eraser2_panel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.eraser2_panel.Location = new System.Drawing.Point(13, 36);
+            this.eraser2_panel.Name = "eraser2_panel";
+            this.eraser2_panel.Size = new System.Drawing.Size(25, 20);
+            this.eraser2_panel.TabIndex = 0;
+            this.eraser2_panel.Visible = false;
+            this.eraser2_panel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.eraser2_panel_MouseClick);
             // 
             // eraser4_panel
             // 
