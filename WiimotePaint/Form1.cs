@@ -12,6 +12,7 @@ using System.Resources;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using WiimoteLib;
 
 namespace PaintProgram
 {
@@ -24,20 +25,83 @@ namespace PaintProgram
         private Point mouse_pos;
         string CurrentFile; // Takes the path from the currently saved or opened file
         Image img;
-        Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
-        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
+
+        private delegate void UpdateWiimoteStateDelegate(WiimoteChangedEventArgs args);
+        private delegate void UpdateExtensionChangedDelegate(WiimoteExtensionChangedEventArgs args);
+
+        Wiimote wm = new Wiimote();
+        Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
+        graphicsLib g_lib = new graphicsLib(640, 480, b);
+        
+        //Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
         
         public Form1()
         {
-            InitializeComponent();
-            
-                
+            InitializeComponent();                
 
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {            
+			wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
+			wm.WiimoteExtensionChanged += new WiimoteExtensionChangedEventHandler(wm_WiimoteExtensionChanged);
+
+            g = Graphics.FromImage(b);
+            wm.Connect();
+            wm.SetReportType(Wiimote.InputReport.IRAccel, true);
+            wm.SetLEDs(false, true, true, false);
+
+        }
+
+        private void UpdateWiimoteState(WiimoteChangedEventArgs args)
         {
-            
+            WiimoteState ws = args.WiimoteState;
+
+            clbButtons.SetItemChecked(0, ws.ButtonState.A);
+            clbButtons.SetItemChecked(1, ws.ButtonState.B);
+            clbButtons.SetItemChecked(2, ws.ButtonState.Minus);
+            clbButtons.SetItemChecked(3, ws.ButtonState.Home);
+            clbButtons.SetItemChecked(4, ws.ButtonState.Plus);
+            clbButtons.SetItemChecked(5, ws.ButtonState.One);
+            clbButtons.SetItemChecked(6, ws.ButtonState.Two);
+            clbButtons.SetItemChecked(7, ws.ButtonState.Up);
+            clbButtons.SetItemChecked(8, ws.ButtonState.Down);
+            clbButtons.SetItemChecked(9, ws.ButtonState.Left);
+            clbButtons.SetItemChecked(10, ws.ButtonState.Right);
+            clbButtons.SetItemChecked(11, ws.NunchukState.C);
+            clbButtons.SetItemChecked(12, ws.NunchukState.Z);
+
+            lblX.Text = ws.AccelState.X.ToString();
+            lblY.Text = ws.AccelState.Y.ToString();
+            lblZ.Text = ws.AccelState.Z.ToString();          
+
+            if (ws.IRState.Found1)
+            {
+                lblIR1.Text = ws.IRState.X1.ToString() + ", " + ws.IRState.Y1.ToString() + ", " + ws.IRState.Size1;
+                lblIR1Raw.Text = ws.IRState.RawX1.ToString() + ", " + ws.IRState.RawY1.ToString();
+            }
+            if (ws.IRState.Found2)
+            {
+                lblIR2.Text = ws.IRState.X2.ToString() + ", " + ws.IRState.Y2.ToString() + ", " + ws.IRState.Size2;
+                lblIR2Raw.Text = ws.IRState.RawX2.ToString() + ", " + ws.IRState.RawY2.ToString();
+            }
+            if (ws.IRState.Found3)
+            {
+                lblIR3.Text = ws.IRState.X3.ToString() + ", " + ws.IRState.Y3.ToString() + ", " + ws.IRState.Size3;
+                lblIR3Raw.Text = ws.IRState.RawX3.ToString() + ", " + ws.IRState.RawY3.ToString();
+            }
+            if (ws.IRState.Found4)
+            {
+                lblIR4.Text = ws.IRState.X4.ToString() + ", " + ws.IRState.Y4.ToString() + ", " + ws.IRState.Size4;
+                lblIR4Raw.Text = ws.IRState.RawX4.ToString() + ", " + ws.IRState.RawY4.ToString();
+            }
+
+            chkFound1.Checked = ws.IRState.Found1;
+            chkFound2.Checked = ws.IRState.Found2;
+            chkFound3.Checked = ws.IRState.Found3;
+            chkFound4.Checked = ws.IRState.Found4;
+
+            pb_image2.Image = graphicsLib.drawCursorPoints(ws);
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -50,8 +114,6 @@ namespace PaintProgram
         {
 
         }
-
-
 
         private void button1_Click(object sender, EventArgs e)
         {
