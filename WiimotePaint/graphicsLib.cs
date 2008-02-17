@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Drawing.Imaging;
 using WiimoteLib;
 
 namespace PaintProgram
@@ -17,24 +18,22 @@ namespace PaintProgram
 
         Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
         Graphics g;
-
-        public void graphicsLib()
-        {            
-        }
-
+                
         //x and y are image dimensions
-        public void graphicsLib(int x, int y)
+        public graphicsLib(int x, int y)
         {
             b = new Bitmap(x,y, PixelFormat.Format24bppRgb);
+            g = Graphics.FromImage(b);
             x_dim = x;
             y_dim = y;
-            x_scale = x / WIIMOTE_RAW_X;
-            y_scale = y / WIIMOTE_RAW_Y;
+            scale_x = x / WIIMOTE_RAW_X;
+            scale_y = y / WIIMOTE_RAW_Y;
         }
 
-        public void graphicsLib(int x, int y, Bitmap b)
+        public graphicsLib(int x, int y, Bitmap b)
         {
             this.b = b;
+            g = Graphics.FromImage(b);
             x_dim = x;
             y_dim = y;
         }
@@ -51,7 +50,8 @@ namespace PaintProgram
                 g.DrawEllipse(new Pen(Color.Orange), (int)(ws.IRState.RawX4 * scale_x), (int)(ws.IRState.RawY4 * scale_y), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
             if (ws.IRState.Found1 && ws.IRState.Found2)
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX * scale_x), (int)(ws.IRState.RawMidY * scale_y), 2, 2);
-        }        
+            return b;
+        }   
 
     }
 }
