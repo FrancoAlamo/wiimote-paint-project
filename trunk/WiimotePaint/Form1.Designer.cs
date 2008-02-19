@@ -433,7 +433,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
