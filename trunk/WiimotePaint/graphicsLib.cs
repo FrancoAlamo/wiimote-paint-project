@@ -51,7 +51,12 @@ namespace PaintProgram
             if (ws.IRState.Found1 && ws.IRState.Found2)
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX * scale_x), (int)(ws.IRState.RawMidY * scale_y), 2, 2);
             return b;
-        }   
+        }
 
+        public void setNewBitmap(Bitmap b)
+        {
+            this.b = b;
+        }
+        
     }
 }

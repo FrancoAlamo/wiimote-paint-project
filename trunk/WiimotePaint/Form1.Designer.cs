@@ -387,7 +387,7 @@
             this.pb_image2.TabIndex = 0;
             this.pb_image2.TabStop = false;
             this.pb_image2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseMove);
-            this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
+            //this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
             this.pb_image2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseDown);
             this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
             // 
@@ -476,6 +476,9 @@
         private System.Windows.Forms.Panel eraser4_panel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel eraser1_panel;
+
+        //Wiimote related objects:
+
     }
 }
 
