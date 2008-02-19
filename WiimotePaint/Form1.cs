@@ -19,94 +19,42 @@ namespace PaintProgram
     
     public partial class Form1 : Form
     {
+        private delegate void UpdateWiimoteStateDelegate(WiimoteChangedEventArgs args);
+        private delegate void UpdateExtensionChangedDelegate(WiimoteExtensionChangedEventArgs args);
+
         public static int k = 0;
         public static int erasersize_x, erasersize_y; // Depending on what size eraser they choose, sets width and height
         private bool mouse_is_down = false;
         private Point mouse_pos;
         string CurrentFile; // Takes the path from the currently saved or opened file
-        Image img;
-
-        private delegate void UpdateWiimoteStateDelegate(WiimoteChangedEventArgs args);
-        private delegate void UpdateExtensionChangedDelegate(WiimoteExtensionChangedEventArgs args);
+        //Image img;   
 
         Wiimote wm = new Wiimote();
         Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
-        graphicsLib g_lib = new graphicsLib(640, 480, b);
-        
-        //Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
+        Graphics g;
+        graphicsLib g_lib = new graphicsLib(640, 480);
+
+        //Franco: let's work on a way to declare these somewhere else
+        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
         
         public Form1()
         {
-            InitializeComponent();                
-
+            InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {            
 			wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
-			wm.WiimoteExtensionChanged += new WiimoteExtensionChangedEventHandler(wm_WiimoteExtensionChanged);
-
+			
+            g_lib = new graphicsLib(640, 480, b); //todo: set with method
             g = Graphics.FromImage(b);
             wm.Connect();
             wm.SetReportType(Wiimote.InputReport.IRAccel, true);
             wm.SetLEDs(false, true, true, false);
-
-        }
-
-        private void UpdateWiimoteState(WiimoteChangedEventArgs args)
-        {
-            WiimoteState ws = args.WiimoteState;
-
-            clbButtons.SetItemChecked(0, ws.ButtonState.A);
-            clbButtons.SetItemChecked(1, ws.ButtonState.B);
-            clbButtons.SetItemChecked(2, ws.ButtonState.Minus);
-            clbButtons.SetItemChecked(3, ws.ButtonState.Home);
-            clbButtons.SetItemChecked(4, ws.ButtonState.Plus);
-            clbButtons.SetItemChecked(5, ws.ButtonState.One);
-            clbButtons.SetItemChecked(6, ws.ButtonState.Two);
-            clbButtons.SetItemChecked(7, ws.ButtonState.Up);
-            clbButtons.SetItemChecked(8, ws.ButtonState.Down);
-            clbButtons.SetItemChecked(9, ws.ButtonState.Left);
-            clbButtons.SetItemChecked(10, ws.ButtonState.Right);
-            clbButtons.SetItemChecked(11, ws.NunchukState.C);
-            clbButtons.SetItemChecked(12, ws.NunchukState.Z);
-
-            lblX.Text = ws.AccelState.X.ToString();
-            lblY.Text = ws.AccelState.Y.ToString();
-            lblZ.Text = ws.AccelState.Z.ToString();          
-
-            if (ws.IRState.Found1)
-            {
-                lblIR1.Text = ws.IRState.X1.ToString() + ", " + ws.IRState.Y1.ToString() + ", " + ws.IRState.Size1;
-                lblIR1Raw.Text = ws.IRState.RawX1.ToString() + ", " + ws.IRState.RawY1.ToString();
-            }
-            if (ws.IRState.Found2)
-            {
-                lblIR2.Text = ws.IRState.X2.ToString() + ", " + ws.IRState.Y2.ToString() + ", " + ws.IRState.Size2;
-                lblIR2Raw.Text = ws.IRState.RawX2.ToString() + ", " + ws.IRState.RawY2.ToString();
-            }
-            if (ws.IRState.Found3)
-            {
-                lblIR3.Text = ws.IRState.X3.ToString() + ", " + ws.IRState.Y3.ToString() + ", " + ws.IRState.Size3;
-                lblIR3Raw.Text = ws.IRState.RawX3.ToString() + ", " + ws.IRState.RawY3.ToString();
-            }
-            if (ws.IRState.Found4)
-            {
-                lblIR4.Text = ws.IRState.X4.ToString() + ", " + ws.IRState.Y4.ToString() + ", " + ws.IRState.Size4;
-                lblIR4Raw.Text = ws.IRState.RawX4.ToString() + ", " + ws.IRState.RawY4.ToString();
-            }
-
-            chkFound1.Checked = ws.IRState.Found1;
-            chkFound2.Checked = ws.IRState.Found2;
-            chkFound3.Checked = ws.IRState.Found3;
-            chkFound4.Checked = ws.IRState.Found4;
-
-            pb_image2.Image = graphicsLib.drawCursorPoints(ws);
-        }
+        }        
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-                
+        {                
 
         }
 
@@ -126,8 +74,7 @@ namespace PaintProgram
         }
 
         private void Open_Click(object sender, EventArgs e)
-        {
-            
+        {            
             openFileDialog1.Title = "Open Image File";
             openFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             openFileDialog1.AddExtension = true;
@@ -135,12 +82,10 @@ namespace PaintProgram
             openFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg,*.jpeg)|*.jpg;*.jpeg||";
             openFileDialog1.FilterIndex = 1;
             openFileDialog1.FileName = "";
-            openFileDialog1.ShowDialog();
-            
+            openFileDialog1.ShowDialog();            
 
             if (openFileDialog1.FileName == "")
-                return;
-            
+                return;            
 
             pb_image2.SizeMode = PictureBoxSizeMode.StretchImage;
             CurrentFile = openFileDialog1.FileName.ToString();
@@ -154,11 +99,7 @@ namespace PaintProgram
             panel1.Height = b.Height + (b.Height/2);
             panel1.Width = b.Width + (b.Width/2);
             panel1.CreateGraphics();
-            //panel1.CanSelect = true;
-            
-            
-            
- 
+            //panel1.CanSelect = true; 
         }
 
         private void btn_load_Click(object sender, System.EventArgs e)
@@ -187,16 +128,11 @@ namespace PaintProgram
             }
             //pb_image2. = pb_image.BindingContext;
             pb_image2.Image.Save(CurrentFile);
-            
-            
-
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             openFileDialog1.OpenFile();
-
-            
         }
 
 
@@ -226,26 +162,7 @@ namespace PaintProgram
         {
             mouse_is_down = true;
             
-        }
-
-
-        private void pb_image2_MouseClick(object sender, MouseEventArgs e)
-        {
-            mouse_is_down = true;
-
-            Point current_pos = Control.MousePosition;
-            //pb_image2.Region.Translate((current_pos.X - mouse_pos.X), (current_pos.Y - mouse_pos.Y));
-          //  current_pos.X = (mouse_pos.X/6) - (current_pos.X/6); //add this current_pos.Y = current_pos.Y - mouse_pos.Y; //add this
-          //  current_pos.Y = (mouse_pos.Y/6) - (current_pos.Y/6);
-          //  pb_image2.Location = current_pos;
-
-            if(mouse_is_down == true)
-            {
-                eraser.DrawRectangle(new Pen(Color.White), e.X - 6, e.Y - 6, erasersize_x, erasersize_y);
-                eraser.FillRectangle(new SolidBrush(Color.White), e.X - 6, e.Y - 6, erasersize_x, erasersize_y);
-                pb_image2.Image = b;
-            }
-        }
+        }        
 
         private void pb_image2_MouseUp(object sender, MouseEventArgs e)
         {
@@ -377,7 +294,6 @@ namespace PaintProgram
                 MessageBox.Show("There was an error." +
                    "Check the path to the image file.");
             }
-
         }
 
         private void Eraser_btn_Click(object sender, EventArgs e)
@@ -395,7 +311,6 @@ namespace PaintProgram
             //colorDialog1.ShowDialog();
             //chosen = colorDialog1.Color;
             //panel1.BackColor = chosen;
-
         }
 
         private void Magnify_btn_Click(object sender, EventArgs e)
@@ -404,11 +319,8 @@ namespace PaintProgram
             //SolidBrush bT = new SolidBrush(Color.Black);
             //Graphics g = Graphics.FromHwnd(this.Handle);  // <=> g = CreateGraphics();
             //Graphics g = Graphics.FromHwndInternal(this.Handle);
-            eraser_box.Visible = false;
-            
-            
+            eraser_box.Visible = false;           
         }
-
 
         private void eraser1_panel_MouseClick(object sender, MouseEventArgs e)
         {
@@ -422,10 +334,7 @@ namespace PaintProgram
             eraser1_panel.BackColor = Color.DarkBlue;
             erasersize_x = 4;
             erasersize_y = 4;
-        } 
-        
-        
-        
+        }       
         
         private void eraser2_panel_MouseClick(object sender, MouseEventArgs e)
         {
@@ -439,9 +348,7 @@ namespace PaintProgram
             eraser2_panel.BackColor = Color.DarkBlue;
             erasersize_x = 7;
             erasersize_y = 7;
-        }
-        
-        
+        }       
         
         private void eraser3_panel_MouseClick(object sender, MouseEventArgs e)
         {
@@ -471,9 +378,21 @@ namespace PaintProgram
             erasersize_y = 12;
         }
 
-       
-   }
+        private void UpdateWiimoteState(WiimoteChangedEventArgs args)
+        {
+            WiimoteState ws = args.WiimoteState;      
 
+            pb_image2.Image = g_lib.drawCursorPoints(ws);
+        }
 
-    
+        private void wm_WiimoteChanged(object sender, WiimoteChangedEventArgs args)
+        {
+            BeginInvoke(new UpdateWiimoteStateDelegate(UpdateWiimoteState), args);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            wm.Disconnect();
+        }       
+   }    
 }
