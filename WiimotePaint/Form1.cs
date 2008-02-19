@@ -22,6 +22,12 @@ namespace PaintProgram
         private delegate void UpdateWiimoteStateDelegate(WiimoteChangedEventArgs args);
         private delegate void UpdateExtensionChangedDelegate(WiimoteExtensionChangedEventArgs args);
 
+        /*--------------------------------------------------------------
+        //Franco: let's work on a way to declare these somewhere else
+         * Possibly in Form1.Designer.cs?
+        ---------------------------------------------------------------*/
+
+        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
         public static int k = 0;
         public static int erasersize_x, erasersize_y; // Depending on what size eraser they choose, sets width and height
         private bool mouse_is_down = false;
@@ -32,10 +38,7 @@ namespace PaintProgram
         Wiimote wm = new Wiimote();
         Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
         Graphics g;
-        graphicsLib g_lib = new graphicsLib(640, 480);
-
-        //Franco: let's work on a way to declare these somewhere else
-        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
+        graphicsLib g_lib = new graphicsLib(640, 480);        
         
         public Form1()
         {
@@ -70,7 +73,7 @@ namespace PaintProgram
             g.DrawEllipse(new Pen(Color.Orange), 200, 200, 300, 200);
             panel1.CreateGraphics();
             // pb_image.Image = b;
-           // pb_image.BackgroundImage = pb_image2.Image;
+            // pb_image.BackgroundImage = pb_image2.Image;
         }
 
         private void Open_Click(object sender, EventArgs e)
@@ -135,21 +138,16 @@ namespace PaintProgram
             openFileDialog1.OpenFile();
         }
 
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             fileToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             editToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             viewToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-            aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-            
-
-            
+            aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;          
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-            
+        {            
 
         }
 
@@ -160,8 +158,7 @@ namespace PaintProgram
 
         private void pb_image_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            mouse_is_down = true;
-            
+            mouse_is_down = true;            
         }        
 
         private void pb_image2_MouseUp(object sender, MouseEventArgs e)
@@ -172,18 +169,12 @@ namespace PaintProgram
         private void pb_image2_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouse_is_down)
-            {
-             //   Point current_pos = Control.MousePosition;
-                //pb_image2.Region.Translate((current_pos.X - mouse_pos.X), (current_pos.Y - mouse_pos.Y));
-             //   current_pos.X = current_pos.X - mouse_pos.X; //add this current_pos.Y = current_pos.Y - mouse_pos.Y; //add this
-             //   this.Location = current_pos;
+            {             
             }
         }
 
         private void pb_image2_MouseDown(object sender, MouseEventArgs e)
         {
-            
-
             while (mouse_is_down)
             {
                 mouse_pos.X = e.X;
