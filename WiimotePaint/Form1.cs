@@ -32,12 +32,15 @@ namespace PaintProgram
         public static int erasersize_x, erasersize_y; // Depending on what size eraser they choose, sets width and height
         private bool mouse_is_down = false;
         private Point mouse_pos;
+        private Point initial_pos;
+        Bitmap initial_b, current_b;
         bool eraser_click = false;
         bool magnify_click = false;
         bool fill_click = false;
         bool cut_click = false;
         bool rectangle_click = false;
         bool pencil_click = false;
+        bool circle_click = false;
         string CurrentFile; // Takes the path from the currently saved or opened file
         Image img;
        // Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
@@ -60,6 +63,7 @@ namespace PaintProgram
             fill_click = false;
             cut_click = false;
             rectangle_click = false;
+            circle_click = false;
             pencil_click = false;
             eraser_box.Visible = false;
             Eraser_btn.FlatStyle = FlatStyle.Standard;
@@ -222,33 +226,64 @@ namespace PaintProgram
 
         private void pb_image2_MouseUp(object sender, MouseEventArgs e)
         {
+            graphicsLib rectangle = new graphicsLib();
             mouse_is_down = false;
-            //if (cut_click)
-                //pb_image2.Image = pb_image.Image;
+            if (rectangle_click)
+            {
+                pb_image2.Image = rectangle.rectangle_function(b, initial_pos, e.X, e.Y);
+            }
+            else if (circle_click)
+            {
+                pb_image2.Image = rectangle.circle_function(b, initial_pos, e.X, e.Y);
+            }
         }
 
         //As the mouse moves, keep erasing the area it travels through
         private void pb_image2_MouseMove(object sender, MouseEventArgs e)
         {
             graphicsLib erase = new graphicsLib();
+            graphicsLib rectangle = new graphicsLib();
+            current_b = initial_b;
             if(mouse_is_down)
             {
-                if(eraser_click)
+                if(eraser_click){
                   pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-            }            
-            
+                } else if (rectangle_click)
+                {
+                        pb_image2.Image = rectangle.rectangle_function(initial_b, initial_pos, e.X, e.Y);
+                }
+                else if (rectangle_click)
+                {
+                    pb_image2.Image = rectangle.circle_function(initial_b, initial_pos, e.X, e.Y);
+                }
+            }
         }
 
         private void pb_image2_MouseDown(object sender, MouseEventArgs e)
         {
             graphicsLib erase = new graphicsLib();
+            graphicsLib rectangle = new graphicsLib();
             mouse_is_down = true;
             mouse_pos.X = e.X;
             mouse_pos.Y = e.Y;
-            if(eraser_click)
+            initial_b = new Bitmap(b);
+            initial_pos.X = e.X;
+            initial_pos.Y = e.Y;
+            if (eraser_click)
+            {
                 pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-            if(cut_click)
+            }
+            else if (cut_click)
+            {
                 pb_image.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+            } else if(rectangle_click)
+            {
+                pb_image2.Image = rectangle.rectangle_function(initial_b, initial_pos, e.X, e.Y);
+            }
+            else if (rectangle_click)
+            {
+                pb_image2.Image = rectangle.circle_function(initial_b, initial_pos, e.X, e.Y);
+            }
 
         }
 
@@ -399,6 +434,12 @@ namespace PaintProgram
             pencil_click = true;
             Pencil_btn.FlatStyle = FlatStyle.Flat;
         }
+        private void Circle_btn_Click(object sender, EventArgs e)
+        {
+            default_clicks();
+            circle_click = true;
+            Circle_btn.FlatStyle = FlatStyle.Flat;
+        } 
 
         // The following four "functions" highlight the chosen eraser blue and keep the other ones lightgray
         // also sets the size of the eraser
@@ -473,6 +514,6 @@ namespace PaintProgram
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             wm.Disconnect();
-        }       
+        }      
    }    
 }

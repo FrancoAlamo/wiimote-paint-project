@@ -70,6 +70,7 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.Circle_btn = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
             this.eraser_box.SuspendLayout();
@@ -212,6 +213,7 @@
             // 
             // groupbox1
             // 
+            this.groupbox1.Controls.Add(this.Circle_btn);
             this.groupbox1.Controls.Add(this.Pencil_btn);
             this.groupbox1.Controls.Add(this.Rectangle_btn);
             this.groupbox1.Controls.Add(this.eraser_box);
@@ -432,6 +434,16 @@
             this.panel2.TabIndex = 1;
             this.panel2.Visible = false;
             // 
+            // Circle_btn
+            // 
+            this.Circle_btn.Location = new System.Drawing.Point(4, 105);
+            this.Circle_btn.Name = "Circle_btn";
+            this.Circle_btn.Size = new System.Drawing.Size(34, 27);
+            this.Circle_btn.TabIndex = 2;
+            this.Circle_btn.Text = "Circle";
+            this.Circle_btn.UseVisualStyleBackColor = true;
+            this.Circle_btn.Click += new System.EventHandler(this.Circle_btn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,6 +513,7 @@
         private System.Windows.Forms.Panel eraser1_panel;
         private System.Windows.Forms.Button Rectangle_btn;
         private System.Windows.Forms.Button Pencil_btn;
+        private System.Windows.Forms.Button Circle_btn;
 
         //Wiimote related objects:
 
