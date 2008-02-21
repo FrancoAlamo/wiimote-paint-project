@@ -29,6 +29,7 @@ namespace PaintProgram
         Bitmap pixel = new Bitmap(100, 200);
         Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
         Graphics rectangle;
+        Graphics circle;
 
 
         //x and y are image dimensions
@@ -90,6 +91,66 @@ namespace PaintProgram
             
             return pic;
         }
+
+        public Image rectangle_function(Image pic, Point initial_pos, int pos_x, int pos_y)
+        {
+            rectangle = Graphics.FromImage(pic);
+            int width = pos_x - initial_pos.X;
+            int heigth = pos_y - initial_pos.Y;
+            if (width < 0 && heigth < 0)
+            {
+                width = initial_pos.X - pos_x;
+                heigth = initial_pos.Y - pos_y;
+                rectangle.DrawRectangle(new Pen(Color.Black), pos_x, pos_y, width, heigth);
+            }
+            else if (heigth < 0)
+            {
+                heigth = initial_pos.Y - pos_y;
+                rectangle.DrawRectangle(new Pen(Color.Black), initial_pos.X, pos_y, width, heigth);
+            }
+            else if (width < 0)
+            {
+                width = initial_pos.X - pos_x;
+                rectangle.DrawRectangle(new Pen(Color.Black), pos_x, initial_pos.Y, width, heigth);
+            }
+            else
+            {
+                rectangle.DrawRectangle(new Pen(Color.Black), initial_pos.X, initial_pos.Y, width, heigth);
+            }
+            return pic;
+        }
+        public Image circle_function(Image pic, Point initial_pos, int pos_x, int pos_y)
+        {
+            circle = Graphics.FromImage(pic);
+            int width = pos_x - initial_pos.X;
+            int height = pos_y - initial_pos.Y;
+            Rectangle rect;
+            if (width < 0 && height < 0)
+            {
+                width = initial_pos.X - pos_x;
+                height = initial_pos.Y - pos_y;
+                rect = new Rectangle(pos_x, pos_y, width, height);
+            }
+            else if (height < 0)
+            {
+                height = initial_pos.Y - pos_y;
+                rect = new Rectangle(pos_x, pos_y, width, height);
+            }
+            else if (width < 0)
+            {
+                width = initial_pos.X - pos_x;
+                rect = new Rectangle(pos_x, pos_y, width, height);
+            }
+            else
+            {
+                rect = new Rectangle(pos_x, pos_y, width, height);
+            }
+
+            circle.DrawEllipse(new Pen(Color.Black), rect);
+            return pic;
+        }
+
+     
 
         public void setNewBitmap(Bitmap b)
         {
