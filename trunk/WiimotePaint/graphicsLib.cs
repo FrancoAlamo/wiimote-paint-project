@@ -27,8 +27,8 @@ namespace PaintProgram
         Graphics g;
         Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
         Bitmap pixel = new Bitmap(100, 200);
-        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
-        Graphics rectangle;
+        Graphics eraser, pencil, rectangle;  // Makes the eraser pencil and rectangle graphics which will later 
+                                             // be a square used to perform each function
         Graphics circle;
 
 
@@ -89,6 +89,24 @@ namespace PaintProgram
             rectangle.FillRectangle(new SolidBrush(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
             p.AddRectangle(rect);
             
+            return pic;
+        }
+
+        public Image pencil_function(Image pic, int pos_x, int pos_y, Color chosen)
+        {
+            pixel.SetPixel(20, 30, Color.White);
+            pencil = Graphics.FromImage(pic);
+            pencil.DrawRectangle(new Pen(chosen), pos_x, pos_y, 1, 1);
+            pencil.FillRectangle(new SolidBrush(chosen), pos_x, pos_y, 1, 1);
+            return pic;
+        }
+
+        public Image show_color_chosen(Image pic, Color chosen)
+        {
+            
+            Graphics colorbox = Graphics.FromImage(pic);
+            colorbox.DrawRectangle(new Pen(chosen), 22, 7, 50, 35);
+            colorbox.FillRectangle(new SolidBrush(chosen), 22, 7, 50, 35);
             return pic;
         }
 
