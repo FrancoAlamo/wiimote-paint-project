@@ -70,6 +70,7 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pb_colors = new System.Windows.Forms.PictureBox();
             this.Circle_btn = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
@@ -77,6 +78,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_image)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_colors)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -434,6 +436,15 @@
             this.panel2.TabIndex = 1;
             this.panel2.Visible = false;
             // 
+            // pb_colors
+            // 
+            this.pb_colors.Location = new System.Drawing.Point(9, 358);
+            this.pb_colors.Name = "pb_colors";
+            this.pb_colors.Size = new System.Drawing.Size(129, 96);
+            this.pb_colors.TabIndex = 4;
+            this.pb_colors.TabStop = false;
+            this.pb_colors.Click += new System.EventHandler(this.pb_colors_Click);
+            // 
             // Circle_btn
             // 
             this.Circle_btn.Location = new System.Drawing.Point(4, 105);
@@ -449,6 +460,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 466);
+            this.Controls.Add(this.pb_colors);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupbox1);
@@ -466,6 +478,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_image)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_colors)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -513,6 +526,7 @@
         private System.Windows.Forms.Panel eraser1_panel;
         private System.Windows.Forms.Button Rectangle_btn;
         private System.Windows.Forms.Button Pencil_btn;
+        private System.Windows.Forms.PictureBox pb_colors;
         private System.Windows.Forms.Button Circle_btn;
 
         //Wiimote related objects:
