@@ -47,6 +47,8 @@
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
+            this.Pencil_btn = new System.Windows.Forms.Button();
+            this.Rectangle_btn = new System.Windows.Forms.Button();
             this.eraser_box = new System.Windows.Forms.GroupBox();
             this.eraser1_panel = new System.Windows.Forms.Panel();
             this.eraser2_panel = new System.Windows.Forms.Panel();
@@ -106,7 +108,7 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
@@ -114,21 +116,21 @@
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // printToolStripMenuItem
             // 
             this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
             // 
@@ -136,7 +138,7 @@
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
             this.quitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.quitToolStripMenuItem.Text = "Exit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -210,6 +212,8 @@
             // 
             // groupbox1
             // 
+            this.groupbox1.Controls.Add(this.Pencil_btn);
+            this.groupbox1.Controls.Add(this.Rectangle_btn);
             this.groupbox1.Controls.Add(this.eraser_box);
             this.groupbox1.Controls.Add(this.Cut_btn);
             this.groupbox1.Controls.Add(this.Eraser_btn);
@@ -221,6 +225,28 @@
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // Pencil_btn
+            // 
+            this.Pencil_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Pencil_btn.BackgroundImage")));
+            this.Pencil_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Pencil_btn.Location = new System.Drawing.Point(38, 69);
+            this.Pencil_btn.Name = "Pencil_btn";
+            this.Pencil_btn.Size = new System.Drawing.Size(37, 31);
+            this.Pencil_btn.TabIndex = 0;
+            this.Pencil_btn.UseVisualStyleBackColor = true;
+            this.Pencil_btn.Click += new System.EventHandler(this.pencil_btn_Click);
+            // 
+            // Rectangle_btn
+            // 
+            this.Rectangle_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Rectangle_btn.BackgroundImage")));
+            this.Rectangle_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.Rectangle_btn.Location = new System.Drawing.Point(1, 69);
+            this.Rectangle_btn.Name = "Rectangle_btn";
+            this.Rectangle_btn.Size = new System.Drawing.Size(37, 31);
+            this.Rectangle_btn.TabIndex = 1;
+            this.Rectangle_btn.UseVisualStyleBackColor = true;
+            this.Rectangle_btn.Click += new System.EventHandler(this.rectangle_btn_Click);
             // 
             // eraser_box
             // 
@@ -299,7 +325,7 @@
             this.Cut_btn.Size = new System.Drawing.Size(37, 31);
             this.Cut_btn.TabIndex = 0;
             this.Cut_btn.UseVisualStyleBackColor = true;
-            this.Cut_btn.Click += new System.EventHandler(this.button1_Click);
+            this.Cut_btn.Click += new System.EventHandler(this.Cut_btn_Click);
             this.Cut_btn.MouseHover += new System.EventHandler(this.Cut_btn_MouseHover);
             // 
             // Eraser_btn
@@ -387,17 +413,14 @@
             this.pb_image2.TabIndex = 0;
             this.pb_image2.TabStop = false;
             this.pb_image2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseMove);
-            //this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
+            this.pb_image2.Click += new System.EventHandler(this.pb_image2_Click);
+            this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
             this.pb_image2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseDown);
             this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
             // 
             // printDialog1
             // 
             this.printDialog1.UseEXDialog = true;
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
             // panel2
             // 
@@ -433,6 +456,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -475,6 +499,8 @@
         private System.Windows.Forms.Panel eraser4_panel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel eraser1_panel;
+        private System.Windows.Forms.Button Rectangle_btn;
+        private System.Windows.Forms.Button Pencil_btn;
 
         //Wiimote related objects:
 
