@@ -47,6 +47,7 @@
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
+            this.Circle_btn = new System.Windows.Forms.Button();
             this.Pencil_btn = new System.Windows.Forms.Button();
             this.Rectangle_btn = new System.Windows.Forms.Button();
             this.eraser_box = new System.Windows.Forms.GroupBox();
@@ -71,7 +72,6 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.pb_colors = new System.Windows.Forms.PictureBox();
-            this.Circle_btn = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
             this.eraser_box.SuspendLayout();
@@ -229,6 +229,16 @@
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // Circle_btn
+            // 
+            this.Circle_btn.Location = new System.Drawing.Point(4, 105);
+            this.Circle_btn.Name = "Circle_btn";
+            this.Circle_btn.Size = new System.Drawing.Size(34, 27);
+            this.Circle_btn.TabIndex = 2;
+            this.Circle_btn.Text = "Circle";
+            this.Circle_btn.UseVisualStyleBackColor = true;
+            this.Circle_btn.Click += new System.EventHandler(this.Circle_btn_Click);
             // 
             // Pencil_btn
             // 
@@ -440,20 +450,10 @@
             // 
             this.pb_colors.Location = new System.Drawing.Point(9, 358);
             this.pb_colors.Name = "pb_colors";
-            this.pb_colors.Size = new System.Drawing.Size(129, 96);
+            this.pb_colors.Size = new System.Drawing.Size(57, 96);
             this.pb_colors.TabIndex = 4;
             this.pb_colors.TabStop = false;
             this.pb_colors.Click += new System.EventHandler(this.pb_colors_Click);
-            // 
-            // Circle_btn
-            // 
-            this.Circle_btn.Location = new System.Drawing.Point(4, 105);
-            this.Circle_btn.Name = "Circle_btn";
-            this.Circle_btn.Size = new System.Drawing.Size(34, 27);
-            this.Circle_btn.TabIndex = 2;
-            this.Circle_btn.Text = "Circle";
-            this.Circle_btn.UseVisualStyleBackColor = true;
-            this.Circle_btn.Click += new System.EventHandler(this.Circle_btn_Click);
             // 
             // Form1
             // 

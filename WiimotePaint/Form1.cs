@@ -262,7 +262,7 @@ namespace PaintProgram
                 {
                         pb_image2.Image = rectangle.rectangle_function(initial_b, initial_pos, e.X, e.Y);
                 }
-                else if (rectangle_click)
+                else if (circle_click)
                 {
                     pb_image2.Image = rectangle.circle_function(initial_b, initial_pos, e.X, e.Y);
                 }

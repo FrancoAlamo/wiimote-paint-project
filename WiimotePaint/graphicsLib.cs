@@ -152,16 +152,16 @@ namespace PaintProgram
             else if (height < 0)
             {
                 height = initial_pos.Y - pos_y;
-                rect = new Rectangle(pos_x, pos_y, width, height);
+                rect = new Rectangle(initial_pos.X, pos_y, width, height);
             }
             else if (width < 0)
             {
                 width = initial_pos.X - pos_x;
-                rect = new Rectangle(pos_x, pos_y, width, height);
+                rect = new Rectangle(pos_x, initial_pos.Y, width, height);
             }
             else
             {
-                rect = new Rectangle(pos_x, pos_y, width, height);
+                rect = new Rectangle(initial_pos.X, initial_pos.Y, width, height);
             }
 
             circle.DrawEllipse(new Pen(Color.Black), rect);
