@@ -31,7 +31,7 @@ namespace PaintProgram
         public static int k = 0;
         public Color chosen = Color.Black;
         public static int erasersize_x, erasersize_y; // Depending on what size eraser they choose, sets width and height
-        private bool mouse_is_down = false;
+        private static bool mouse_is_down = false;
         private Point mouse_pos;
         private Point initial_pos;
         Bitmap initial_b, current_b;
@@ -56,6 +56,15 @@ namespace PaintProgram
         {
             InitializeComponent();
             default_clicks();
+            try
+            {
+                b = (Bitmap)Bitmap.FromFile("C:\\Documents and Settings\\EE464\\Desktop\\EE464 Wiimote Project\\WiimotePaint\\Images\\Blank.bmp");
+            }
+            catch (IOException e) {}
+            eraser1_panel.ForeColor = Color.Blue;
+            eraser1_panel.BackColor = Color.DarkBlue;
+            erasersize_x = 4;
+            erasersize_y = 4;
             pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
         }
 
@@ -115,16 +124,13 @@ namespace PaintProgram
             pb_image2.SizeMode = PictureBoxSizeMode.StretchImage;
             CurrentFile = openFileDialog1.FileName.ToString();
             b = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
-            //img = Image.FromFile(openFileDialog1.FileName);
             pb_image2.ClientSize = new Size((b.Width), (b.Height));
             pb_image2.Height = b.Height;
             pb_image2.Width = b.Width;
             pb_image2.Image = b;
-            //pb_color.Image = (Image) img;
             panel1.Height = b.Height + (b.Height/2);
             panel1.Width = b.Width + (b.Width/2);
-            panel1.CreateGraphics();
-            //panel1.CanSelect = true; 
+            panel1.CreateGraphics(); 
         }
 
 
@@ -231,15 +237,17 @@ namespace PaintProgram
 
         private void pb_image2_MouseUp(object sender, MouseEventArgs e)
         {
-            graphicsLib rectangle = new graphicsLib();
+            graphicsLib shape = new graphicsLib();
             mouse_is_down = false;
+            //This will update the image and allow for the rectangles created to stay on screen
             if (rectangle_click)
             {
-                pb_image2.Image = rectangle.rectangle_function(b, initial_pos, e.X, e.Y);
+                b = (Bitmap) shape.rectangle_function(b, initial_pos, e.X, e.Y, chosen);
+                pb_image2.Image = b;
             }
             else if (circle_click)
             {
-                pb_image2.Image = rectangle.circle_function(b, initial_pos, e.X, e.Y);
+                pb_image2.Image = shape.circle_function(b, initial_pos, e.X, e.Y);
             }
         }
 
@@ -248,23 +256,28 @@ namespace PaintProgram
         {
             graphicsLib erase = new graphicsLib();
             graphicsLib pencil = new graphicsLib();
-            graphicsLib rectangle = new graphicsLib();
+            graphicsLib shape = new graphicsLib();
             current_b = initial_b;
             if(mouse_is_down)
             {
                 if(eraser_click){
                     pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                    pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                    pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
                 }
                 else if(pencil_click){
+                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
+                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
+                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
                     pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
                 } 
                 else if (rectangle_click)
                 {
-                        pb_image2.Image = rectangle.rectangle_function(initial_b, initial_pos, e.X, e.Y);
+                        pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
                 }
                 else if (circle_click)
                 {
-                    pb_image2.Image = rectangle.circle_function(initial_b, initial_pos, e.X, e.Y);
+                    pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y);
                 }
             }
         }
@@ -273,7 +286,7 @@ namespace PaintProgram
         {
             graphicsLib erase = new graphicsLib();
             graphicsLib pencil = new graphicsLib();
-            graphicsLib rectangle = new graphicsLib();
+            graphicsLib shape = new graphicsLib();
             mouse_is_down = true;
             mouse_pos.X = e.X;
             mouse_pos.Y = e.Y;
@@ -288,15 +301,17 @@ namespace PaintProgram
             {
                 pb_image.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
             }
-            else if(pencil_click)
-                pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
-            else if(rectangle_click)
+            else if (pencil_click)
             {
-                pb_image2.Image = rectangle.rectangle_function(initial_b, initial_pos, e.X, e.Y);
+                pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
             }
             else if (rectangle_click)
             {
-                pb_image2.Image = rectangle.circle_function(initial_b, initial_pos, e.X, e.Y);
+                pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
+            }
+            else if (rectangle_click)
+            {
+                pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y);
             }
 
         }

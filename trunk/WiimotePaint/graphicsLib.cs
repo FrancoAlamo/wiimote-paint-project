@@ -110,33 +110,41 @@ namespace PaintProgram
             return pic;
         }
 
-        public Image rectangle_function(Image pic, Point initial_pos, int pos_x, int pos_y)
+        
+        //So, Jeff made it to where this creates a square, only problem was it made multiple squares
+        //I fixed it by creating a clone of the image being sent in and then everytime it comes into this function
+        //it is using the fresh pic, which is what we want to do.
+        public Image rectangle_function(Image pic, Point initial_pos, int pos_x, int pos_y, Color chosen)
         {
-            rectangle = Graphics.FromImage(pic);
+            Image temppic;
+            temppic = (Image) pic.Clone();
+            rectangle = Graphics.FromImage(temppic);
             int width = pos_x - initial_pos.X;
             int heigth = pos_y - initial_pos.Y;
             if (width < 0 && heigth < 0)
             {
                 width = initial_pos.X - pos_x;
                 heigth = initial_pos.Y - pos_y;
-                rectangle.DrawRectangle(new Pen(Color.Black), pos_x, pos_y, width, heigth);
+                rectangle.DrawRectangle(new Pen(chosen), pos_x, pos_y, width, heigth);
             }
             else if (heigth < 0)
             {
                 heigth = initial_pos.Y - pos_y;
-                rectangle.DrawRectangle(new Pen(Color.Black), initial_pos.X, pos_y, width, heigth);
+                rectangle.DrawRectangle(new Pen(chosen), initial_pos.X, pos_y, width, heigth);
             }
             else if (width < 0)
             {
                 width = initial_pos.X - pos_x;
-                rectangle.DrawRectangle(new Pen(Color.Black), pos_x, initial_pos.Y, width, heigth);
+                rectangle.DrawRectangle(new Pen(chosen), pos_x, initial_pos.Y, width, heigth);
             }
             else
             {
-                rectangle.DrawRectangle(new Pen(Color.Black), initial_pos.X, initial_pos.Y, width, heigth);
+                rectangle.DrawRectangle(new Pen(chosen), initial_pos.X, initial_pos.Y, width, heigth);
             }
-            return pic;
+            return temppic;
         }
+
+
         public Image circle_function(Image pic, Point initial_pos, int pos_x, int pos_y)
         {
             circle = Graphics.FromImage(pic);
