@@ -244,6 +244,7 @@
             // 
             this.Pencil_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Pencil_btn.BackgroundImage")));
             this.Pencil_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Pencil_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Pencil_btn.Location = new System.Drawing.Point(38, 69);
             this.Pencil_btn.Name = "Pencil_btn";
             this.Pencil_btn.Size = new System.Drawing.Size(37, 31);
@@ -255,6 +256,7 @@
             // 
             this.Rectangle_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Rectangle_btn.BackgroundImage")));
             this.Rectangle_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.Rectangle_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Rectangle_btn.Location = new System.Drawing.Point(1, 69);
             this.Rectangle_btn.Name = "Rectangle_btn";
             this.Rectangle_btn.Size = new System.Drawing.Size(37, 31);
