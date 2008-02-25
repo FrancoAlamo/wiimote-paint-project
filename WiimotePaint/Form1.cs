@@ -203,8 +203,7 @@ namespace PaintProgram
         {
             
         }
-
-
+        
         private void pb_image2_Click(object sender, EventArgs e)
         {
             mouse_is_down = true; 
