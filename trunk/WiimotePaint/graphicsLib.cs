@@ -27,9 +27,8 @@ namespace PaintProgram
         Graphics g;
         Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
         Bitmap pixel = new Bitmap(100, 200);
-        Graphics eraser, pencil, rectangle;  // Makes the eraser pencil and rectangle graphics which will later 
+        Graphics circle, eraser, pencil, rectangle;  // Makes the eraser pencil and rectangle graphics which will later 
                                              // be a square used to perform each function
-        Graphics circle;
 
 
         //x and y are image dimensions
@@ -68,12 +67,20 @@ namespace PaintProgram
             return b;
         }
 
-        public Image eraser_function(Image pic, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
+        public Image eraser_function(Image pic, Point temp, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
         {
             pixel.SetPixel(20, 30, Color.White);
             eraser = Graphics.FromImage(pic);
+            Point pointul = new Point(); Point pointur = new Point(); Point pointbl = new Point(); Point pointbr = new Point();
             eraser.DrawRectangle(new Pen(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
             eraser.FillRectangle(new SolidBrush(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
+            /*pointul.X = temp.X; pointul.Y = temp.Y; 
+            pointbl.X = temp.X; pointbl.Y = temp.Y + erasersize_y;
+            pointur.X = pos_x - (erasersize_x/2); pointur.Y = pos_y - (erasersize_y / 2);
+            pointbr.X = pos_x - (erasersize_x/2); pointbr.Y = pos_y + (erasersize_y / 2);
+            Point[] pointArray = {pointul, pointur, pointbr, pointbl};
+            eraser.DrawPolygon(new Pen(Color.White), pointArray);
+            eraser.FillPolygon(new SolidBrush(Color.White), pointArray);*/
             return pic;
         }
 
@@ -92,12 +99,11 @@ namespace PaintProgram
             return pic;
         }
 
-        public Image pencil_function(Image pic, int pos_x, int pos_y, Color chosen)
+        public Image pencil_function(Image pic, Point temp, int pos_x, int pos_y, Color chosen)
         {
             pixel.SetPixel(20, 30, Color.White);
             pencil = Graphics.FromImage(pic);
-            pencil.DrawRectangle(new Pen(chosen), pos_x, pos_y, 1, 1);
-            pencil.FillRectangle(new SolidBrush(chosen), pos_x, pos_y, 1, 1);
+            pencil.DrawLine(new Pen(chosen), temp.X, temp.Y, pos_x, pos_y);
             return pic;
         }
 
@@ -145,11 +151,12 @@ namespace PaintProgram
         }
 
 
-        public Image circle_function(Image pic, Point initial_pos, int pos_x, int pos_y)
+        public Image circle_function(Image pic, Point initial_pos, int pos_x, int pos_y, Color chosen)
         {
-            circle = Graphics.FromImage(pic);
+            Image temppic = (Image) pic.Clone();
             int width = pos_x - initial_pos.X;
             int height = pos_y - initial_pos.Y;
+            circle = Graphics.FromImage(temppic);
             Rectangle rect;
             if (width < 0 && height < 0)
             {
@@ -172,8 +179,8 @@ namespace PaintProgram
                 rect = new Rectangle(initial_pos.X, initial_pos.Y, width, height);
             }
 
-            circle.DrawEllipse(new Pen(Color.Black), rect);
-            return pic;
+            circle.DrawEllipse(new Pen(chosen), rect);
+            return temppic;
         }
 
      
