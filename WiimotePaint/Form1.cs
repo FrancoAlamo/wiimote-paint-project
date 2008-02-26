@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.IO;
 using System.Resources;
+using System.Runtime.InteropServices; 
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -48,7 +49,7 @@ namespace PaintProgram
         // Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
         Bitmap pixel = new Bitmap(50, 35);
         Wiimote wm = new Wiimote();
-        Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
+        Bitmap b = new Bitmap(640, 480);
         Graphics g;
         graphicsLib colorbox = new graphicsLib();
         graphicsLib g_lib = new graphicsLib(640, 480);
@@ -56,12 +57,8 @@ namespace PaintProgram
         public Form1()
         {
             InitializeComponent();
+            pb_image2.Size = panel1.Size;
             default_clicks();
-            try
-            {
-                b = (Bitmap)Bitmap.FromFile("C:\\Documents and Settings\\EE464\\Desktop\\EE464 Wiimote Project\\WiimotePaint\\Images\\Blank.bmp");
-            }
-            catch (IOException e) { }
             eraser1_panel.ForeColor = Color.Blue;
             eraser1_panel.BackColor = Color.DarkBlue;
             erasersize_x = 4;
@@ -119,7 +116,7 @@ namespace PaintProgram
             eraser1_panel.BackColor = Color.DarkBlue;
             erasersize_x = 4;
             erasersize_y = 4;
-            pb_colors.Image = colorbox.show_color_chosen(pixel, Color.White);
+            pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
         }
 
         private void Open_Click(object sender, EventArgs e)
@@ -200,8 +197,7 @@ namespace PaintProgram
 
 
         //Gives color to the menu bar
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void pb_image2_Paint(object sender, PaintEventArgs e)
         {
             fileToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             editToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
@@ -246,6 +242,11 @@ namespace PaintProgram
             {
                 pb_image2.Image = pencil.pencil_function(b, temp_pos, e.X, e.Y, chosen);
             }
+            else if (cut_click)
+            {
+
+            }
+            
 
         }
 
@@ -265,6 +266,10 @@ namespace PaintProgram
                 b = (Bitmap)shape.circle_function(b, initial_pos, e.X, e.Y, chosen);
                 pb_image2.Image = b;
             }
+            else if (cut_click)
+            {
+                
+            }
             else if (eraser_click)
             {
                 pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
@@ -278,6 +283,9 @@ namespace PaintProgram
             graphicsLib pencil = new graphicsLib();
             graphicsLib shape = new graphicsLib();
             current_b = initial_b;
+            ResizeImage k = new ResizeImage();
+            //k.DoResizing(pb_image2.Handle);
+            k.Resize_movement(e, pb_image2);
             if (mouse_is_down)
             {
                 if (eraser_click)
@@ -312,13 +320,16 @@ namespace PaintProgram
             initial_b = new Bitmap(b);
             initial_pos.X = e.X; initial_pos.Y = e.Y;
             temp_pos.X = e.X; temp_pos.Y = e.Y;
+            ResizeImage k = new ResizeImage();
+            k.DoResizing(pb_image2.Handle);
+            //k.Resize_movement(e, pb_image2);
             if (eraser_click)
             {
                 pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
             }
             else if (cut_click)
             {
-                pb_image.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                
             }
             else if (pencil_click)
             {
@@ -546,6 +557,7 @@ namespace PaintProgram
         {
             WiimoteState ws = args.WiimoteState;
             pb_image2.Image = g_lib.drawCursorPoints(ws);
+
         }
 
         private void wm_WiimoteChanged(object sender, WiimoteChangedEventArgs args)
@@ -565,6 +577,15 @@ namespace PaintProgram
             pb_colors.Image = colorbox.show_color_chosen(pixel, chosen);
 
         }
+
+
+        private void pb_image2_MouseEnter(object sender, EventArgs e)
+        {
+            //     NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_S, ref nul);
+         //   ResizablePictureBox modify = new ResizablePictureBox();
+            
+        }
+
 
 
 
