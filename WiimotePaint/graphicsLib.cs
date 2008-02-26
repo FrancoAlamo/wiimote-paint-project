@@ -38,6 +38,7 @@ namespace PaintProgram
         public graphicsLib(int x, int y)
         {
             b = new Bitmap(x, y, PixelFormat.Format24bppRgb);
+            
             x_dim = x;
             y_dim = y;
             scale_x = x / WIIMOTE_RAW_X;
@@ -69,7 +70,6 @@ namespace PaintProgram
 
         public Image eraser_function(Image pic, Point temp, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
         {
-            pixel.SetPixel(20, 30, Color.White);
             eraser = Graphics.FromImage(pic);
             Point pointul = new Point(); Point pointur = new Point(); Point pointbl = new Point(); Point pointbr = new Point();
             eraser.DrawRectangle(new Pen(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
