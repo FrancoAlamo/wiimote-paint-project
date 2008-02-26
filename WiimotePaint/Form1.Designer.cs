@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +48,7 @@
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
+            this.pb_colors = new System.Windows.Forms.PictureBox();
             this.Circle_btn = new System.Windows.Forms.Button();
             this.Pencil_btn = new System.Windows.Forms.Button();
             this.Rectangle_btn = new System.Windows.Forms.Button();
@@ -61,25 +63,23 @@
             this.Fill_btn = new System.Windows.Forms.Button();
             this.Magnify_btn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.pb_image2 = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.pb_image = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pb_image2 = new System.Windows.Forms.PictureBox();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
-            this.pb_colors = new System.Windows.Forms.PictureBox();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pb_image = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.groupbox1.SuspendLayout();
-            this.eraser_box.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_image)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_colors)).BeginInit();
+            this.eraser_box.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -92,7 +92,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(906, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(941, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -110,11 +110,19 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
@@ -122,14 +130,14 @@
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -137,7 +145,7 @@
             // 
             this.printToolStripMenuItem.Name = "printToolStripMenuItem";
             this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
             // 
@@ -145,7 +153,7 @@
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
             this.quitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.quitToolStripMenuItem.Text = "Exit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -219,6 +227,9 @@
             // 
             // groupbox1
             // 
+            this.groupbox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupbox1.Controls.Add(this.pb_colors);
             this.groupbox1.Controls.Add(this.Circle_btn);
             this.groupbox1.Controls.Add(this.Pencil_btn);
             this.groupbox1.Controls.Add(this.Rectangle_btn);
@@ -229,10 +240,21 @@
             this.groupbox1.Controls.Add(this.Magnify_btn);
             this.groupbox1.Location = new System.Drawing.Point(8, 16);
             this.groupbox1.Name = "groupbox1";
-            this.groupbox1.Size = new System.Drawing.Size(77, 341);
+            this.groupbox1.Size = new System.Drawing.Size(78, 654);
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // pb_colors
+            // 
+            this.pb_colors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pb_colors.Location = new System.Drawing.Point(6, 264);
+            this.pb_colors.Name = "pb_colors";
+            this.pb_colors.Size = new System.Drawing.Size(63, 76);
+            this.pb_colors.TabIndex = 4;
+            this.pb_colors.TabStop = false;
+            this.pb_colors.Click += new System.EventHandler(this.pb_colors_Click);
             // 
             // Circle_btn
             // 
@@ -276,9 +298,9 @@
             this.eraser_box.Controls.Add(this.eraser3_panel);
             this.eraser_box.Controls.Add(this.label1);
             this.eraser_box.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.eraser_box.Location = new System.Drawing.Point(8, 138);
+            this.eraser_box.Location = new System.Drawing.Point(15, 138);
             this.eraser_box.Name = "eraser_box";
-            this.eraser_box.Size = new System.Drawing.Size(50, 154);
+            this.eraser_box.Size = new System.Drawing.Size(50, 120);
             this.eraser_box.TabIndex = 1;
             this.eraser_box.TabStop = false;
             this.eraser_box.Visible = false;
@@ -387,13 +409,33 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.groupBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.groupBox2.Location = new System.Drawing.Point(66, 18);
+            this.groupBox2.Controls.Add(this.pb_image2);
+            this.groupBox2.Location = new System.Drawing.Point(86, 18);
+            this.groupBox2.MinimumSize = new System.Drawing.Size(317, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(857, 747);
+            this.groupBox2.Size = new System.Drawing.Size(1171, 945);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
+            // 
+            // pb_image2
+            // 
+            this.pb_image2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pb_image2.Location = new System.Drawing.Point(6, 9);
+            this.pb_image2.Name = "pb_image2";
+            this.pb_image2.Size = new System.Drawing.Size(640, 480);
+            this.pb_image2.TabIndex = 0;
+            this.pb_image2.TabStop = false;
+            this.pb_image2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseMove);
+            this.pb_image2.Click += new System.EventHandler(this.pb_image2_Click);
+            this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
+            this.pb_image2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseDown);
+            this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
+            this.pb_image2.Paint += new System.Windows.Forms.PaintEventHandler(this.pb_image2_Paint);
             // 
             // openFileDialog1
             // 
@@ -404,82 +446,48 @@
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
-            // pb_image
-            // 
-            this.pb_image.Location = new System.Drawing.Point(0, 0);
-            this.pb_image.Name = "pb_image";
-            this.pb_image.Size = new System.Drawing.Size(296, 215);
-            this.pb_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pb_image.TabIndex = 0;
-            this.pb_image.TabStop = false;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel1.Controls.Add(this.pb_image2);
-            this.panel1.Controls.Add(this.pb_image);
-            this.panel1.Location = new System.Drawing.Point(91, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.panel1.Size = new System.Drawing.Size(808, 614);
-            this.panel1.TabIndex = 2;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // pb_image2
-            // 
-            this.pb_image2.Location = new System.Drawing.Point(0, 0);
-            this.pb_image2.Name = "pb_image2";
-            this.pb_image2.Size = new System.Drawing.Size(800, 600);
-            this.pb_image2.TabIndex = 0;
-            this.pb_image2.TabStop = false;
-            this.pb_image2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseMove);
-            this.pb_image2.Click += new System.EventHandler(this.pb_image2_Click);
-            this.pb_image2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseClick);
-            this.pb_image2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseDown);
-            this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
-            // 
             // printDialog1
             // 
             this.printDialog1.UseEXDialog = true;
             // 
             // panel2
             // 
-            this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel2.Location = new System.Drawing.Point(0, -21);
+            this.panel2.Location = new System.Drawing.Point(440, 500);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(25, 20);
+            this.panel2.Size = new System.Drawing.Size(100, 100);
             this.panel2.TabIndex = 1;
-            this.panel2.Visible = false;
             // 
-            // pb_colors
+            // pb_image
             // 
-            this.pb_colors.Location = new System.Drawing.Point(9, 352);
-            this.pb_colors.Name = "pb_colors";
-            this.pb_colors.Size = new System.Drawing.Size(76, 309);
-            this.pb_colors.TabIndex = 4;
-            this.pb_colors.TabStop = false;
-            this.pb_colors.Click += new System.EventHandler(this.pb_colors_Click);
+            this.pb_image.Location = new System.Drawing.Point(0, 0);
+            this.pb_image.Name = "pb_image";
+            this.pb_image.Size = new System.Drawing.Size(1, 1);
+            this.pb_image.TabIndex = 0;
+            this.pb_image.TabStop = false;
             // 
-            // newToolStripMenuItem
+            // panel1
             // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.panel1.Location = new System.Drawing.Point(91, 37);
+            this.panel1.Name = "panel1";
+            this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.panel1.Size = new System.Drawing.Size(641, 481);
+            this.panel1.TabIndex = 2;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(906, 660);
-            this.Controls.Add(this.pb_colors);
-            this.Controls.Add(this.panel1);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.ClientSize = new System.Drawing.Size(941, 671);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupbox1);
             this.Controls.Add(this.groupBox2);
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(300, 410);
             this.Name = "Form1";
             this.Text = "WiiPaint";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -487,12 +495,12 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupbox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_colors)).EndInit();
             this.eraser_box.ResumeLayout(false);
             this.eraser_box.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_image)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_colors)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_image)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -518,9 +526,6 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.PictureBox pb_image;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pb_image2;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
@@ -543,6 +548,9 @@
         private System.Windows.Forms.PictureBox pb_colors;
         private System.Windows.Forms.Button Circle_btn;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pb_image;
+        private System.Windows.Forms.PictureBox pb_image2;
+        private System.Windows.Forms.Panel panel1;
 
         //Wiimote related objects:
 
