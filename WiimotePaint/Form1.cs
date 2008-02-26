@@ -16,7 +16,7 @@ using WiimoteLib;
 
 namespace PaintProgram
 {
-    
+
     public partial class Form1 : Form
     {
         private delegate void UpdateWiimoteStateDelegate(WiimoteChangedEventArgs args);
@@ -34,6 +34,7 @@ namespace PaintProgram
         private static bool mouse_is_down = false;
         private Point mouse_pos;
         private Point initial_pos;
+        private Point temp_pos;
         Bitmap initial_b, current_b;
         bool eraser_click = false;
         bool magnify_click = false;
@@ -44,14 +45,14 @@ namespace PaintProgram
         bool circle_click = false;
         string CurrentFile; // Takes the path from the currently saved or opened file
         Image img;
-       // Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
+        // Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
         Bitmap pixel = new Bitmap(50, 35);
         Wiimote wm = new Wiimote();
         Bitmap b = new Bitmap(640, 480, PixelFormat.Format24bppRgb);
         Graphics g;
         graphicsLib colorbox = new graphicsLib();
-        graphicsLib g_lib = new graphicsLib(640, 480);        
-        
+        graphicsLib g_lib = new graphicsLib(640, 480);
+
         public Form1()
         {
             InitializeComponent();
@@ -60,7 +61,7 @@ namespace PaintProgram
             {
                 b = (Bitmap)Bitmap.FromFile("C:\\Documents and Settings\\EE464\\Desktop\\EE464 Wiimote Project\\WiimotePaint\\Images\\Blank.bmp");
             }
-            catch (IOException e) {}
+            catch (IOException e) { }
             eraser1_panel.ForeColor = Color.Blue;
             eraser1_panel.BackColor = Color.DarkBlue;
             erasersize_x = 4;
@@ -87,17 +88,17 @@ namespace PaintProgram
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {            
-			//wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
+        {
+            //wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
             //g_lib = new graphicsLib(640, 480, b); //todo: set with method
             //g = Graphics.FromImage(b);
             //wm.Connect();
             //wm.SetReportType(Wiimote.InputReport.IRAccel, true);
             //wm.SetLEDs(false, true, true, false);
-        }        
+        }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {                
+        {
 
         }
 
@@ -106,9 +107,23 @@ namespace PaintProgram
 
         }
 
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            default_clicks();
+            b = new Bitmap(640, 480);
+            pb_image2.SizeMode = PictureBoxSizeMode.AutoSize;
+            pb_image2.Height = b.Height;
+            pb_image2.Width = b.Width;
+            pb_image2.Image = b;
+            eraser1_panel.ForeColor = Color.Blue;
+            eraser1_panel.BackColor = Color.DarkBlue;
+            erasersize_x = 4;
+            erasersize_y = 4;
+            pb_colors.Image = colorbox.show_color_chosen(pixel, Color.White);
+        }
 
         private void Open_Click(object sender, EventArgs e)
-        {            
+        {
             openFileDialog1.Title = "Open Image File";
             openFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             openFileDialog1.AddExtension = true;
@@ -116,10 +131,10 @@ namespace PaintProgram
             openFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg,*.jpeg)|*.jpg;*.jpeg||";
             openFileDialog1.FilterIndex = 1;
             openFileDialog1.FileName = "";
-            openFileDialog1.ShowDialog();            
+            openFileDialog1.ShowDialog();
 
             if (openFileDialog1.FileName == "")
-                return;            
+                return;
 
             pb_image2.SizeMode = PictureBoxSizeMode.StretchImage;
             CurrentFile = openFileDialog1.FileName.ToString();
@@ -128,9 +143,9 @@ namespace PaintProgram
             pb_image2.Height = b.Height;
             pb_image2.Width = b.Width;
             pb_image2.Image = b;
-            panel1.Height = b.Height + (b.Height/2);
-            panel1.Width = b.Width + (b.Width/2);
-            panel1.CreateGraphics(); 
+            panel1.Height = b.Height + (b.Height / 2);
+            panel1.Width = b.Width + (b.Width / 2);
+            panel1.CreateGraphics();
         }
 
 
@@ -161,7 +176,7 @@ namespace PaintProgram
         //will prompt the user to choose a filename and save
         private void Save_Click(object sender, EventArgs e)
         {
-            
+
             saveFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
             saveFileDialog1.AddExtension = true;
             saveFileDialog1.DefaultExt = "jpg";
@@ -174,7 +189,7 @@ namespace PaintProgram
                 saveFileDialog1.ShowDialog();
                 CurrentFile = saveFileDialog1.FileName.ToString();
             }
-            
+
             pb_image2.Image.Save(CurrentFile);
         }
 
@@ -191,29 +206,29 @@ namespace PaintProgram
             fileToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             editToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             viewToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-            aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;     
+            aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
             aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {            
+        {
         }
 
         private void pb_image_Click(object sender, EventArgs e)
         {
-            
+
         }
-        
+
         private void pb_image2_Click(object sender, EventArgs e)
         {
-            mouse_is_down = true; 
+            mouse_is_down = true;
         }
 
         private void pb_image_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             mouse_is_down = true;
         }
-   
+
 
         //When the image area is clicked, check which tool is chosen and perform the action
         private void pb_image2_MouseClick(object sender, MouseEventArgs e)
@@ -223,30 +238,36 @@ namespace PaintProgram
             Point current_pos = Control.MousePosition;
             mouse_is_down = true;
             //if the eraser tool is chosen, then call the erase function
-            if(eraser_click == true)
+            if (eraser_click == true)
             {
-                pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
             }
             else if (pencil_click == true)
             {
-                pb_image2.Image = pencil.pencil_function(b, e.X, e.Y, chosen);
+                pb_image2.Image = pencil.pencil_function(b, temp_pos, e.X, e.Y, chosen);
             }
-            
+
         }
 
         private void pb_image2_MouseUp(object sender, MouseEventArgs e)
         {
             graphicsLib shape = new graphicsLib();
+            graphicsLib erase = new graphicsLib();
             mouse_is_down = false;
             //This will update the image and allow for the rectangles created to stay on screen
             if (rectangle_click)
             {
-                b = (Bitmap) shape.rectangle_function(b, initial_pos, e.X, e.Y, chosen);
+                b = (Bitmap)shape.rectangle_function(b, initial_pos, e.X, e.Y, chosen);
                 pb_image2.Image = b;
             }
             else if (circle_click)
             {
-                pb_image2.Image = shape.circle_function(b, initial_pos, e.X, e.Y);
+                b = (Bitmap)shape.circle_function(b, initial_pos, e.X, e.Y, chosen);
+                pb_image2.Image = b;
+            }
+            else if (eraser_click)
+            {
+                pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
             }
         }
 
@@ -257,26 +278,25 @@ namespace PaintProgram
             graphicsLib pencil = new graphicsLib();
             graphicsLib shape = new graphicsLib();
             current_b = initial_b;
-            if(mouse_is_down)
+            if (mouse_is_down)
             {
-                if(eraser_click){
-                    pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-                    pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-                    pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                if (eraser_click)
+                {
+                    pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - erasersize_x/2), (e.Y - erasersize_y/2), erasersize_x, erasersize_y);
+                    temp_pos.X = e.X+6; temp_pos.Y = e.Y-6;
                 }
-                else if(pencil_click){
-                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
-                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
-                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
-                    pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
-                } 
+                else if (pencil_click)
+                {
+                    pb_image2.Image = pencil.pencil_function(b, temp_pos, (e.X), (e.Y), chosen);
+                    temp_pos.X = e.X; temp_pos.Y = e.Y;
+                }
                 else if (rectangle_click)
                 {
-                        pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
+                    pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
                 }
                 else if (circle_click)
                 {
-                    pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y);
+                    pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y, chosen);
                 }
             }
         }
@@ -290,32 +310,32 @@ namespace PaintProgram
             mouse_pos.X = e.X;
             mouse_pos.Y = e.Y;
             initial_b = new Bitmap(b);
-            initial_pos.X = e.X;
-            initial_pos.Y = e.Y;
+            initial_pos.X = e.X; initial_pos.Y = e.Y;
+            temp_pos.X = e.X; temp_pos.Y = e.Y;
             if (eraser_click)
             {
-                pb_image2.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
             }
             else if (cut_click)
             {
-                pb_image.Image = erase.eraser_function(b, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
+                pb_image.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
             }
             else if (pencil_click)
             {
-                pb_image2.Image = pencil.pencil_function(b, (e.X), (e.Y), chosen);
+                pb_image2.Image = pencil.pencil_function(b, temp_pos, (e.X), (e.Y), chosen);
             }
             else if (rectangle_click)
             {
                 pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
             }
-            else if (rectangle_click)
+            else if (circle_click)
             {
-                pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y);
+                pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y, chosen);
             }
 
         }
 
- 
+
         private void Form1_Resize(object sender, EventArgs e)
         {
 
@@ -340,10 +360,10 @@ namespace PaintProgram
 
 
         //Following four "functions" display a little message when the user hovers over the button
-        
+
         private void Cut_btn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.Cut_btn, "Cut Tool");        
+            toolTip1.SetToolTip(this.Cut_btn, "Cut Tool");
         }
 
         private void Magnify_btn_MouseHover(object sender, EventArgs e)
@@ -368,9 +388,9 @@ namespace PaintProgram
             default_clicks();
             Fill_btn.FlatStyle = FlatStyle.Flat;
             fill_click = true;
-      //      Color chosen;
-      //      colorDialog1.ShowDialog();
-      //      chosen = colorDialog1.Color;
+            //      Color chosen;
+            //      colorDialog1.ShowDialog();
+            //      chosen = colorDialog1.Color;
             eraser_box.Visible = false;
             try
             {
@@ -431,7 +451,7 @@ namespace PaintProgram
             Magnify_btn.FlatStyle = FlatStyle.Flat;
             magnify_click = true;
 
-            eraser_box.Visible = false;           
+            eraser_box.Visible = false;
 
         }
 
@@ -461,7 +481,7 @@ namespace PaintProgram
             default_clicks();
             circle_click = true;
             Circle_btn.FlatStyle = FlatStyle.Flat;
-        } 
+        }
 
         // The following four "functions" highlight the chosen eraser blue and keep the other ones lightgray
         // also sets the size of the eraser
@@ -477,8 +497,8 @@ namespace PaintProgram
             eraser1_panel.BackColor = Color.DarkBlue;
             erasersize_x = 4;
             erasersize_y = 4;
-        }       
-        
+        }
+
         private void eraser2_panel_MouseClick(object sender, MouseEventArgs e)
         {
             eraser1_panel.ForeColor = Color.LightGray;
@@ -491,8 +511,8 @@ namespace PaintProgram
             eraser2_panel.BackColor = Color.DarkBlue;
             erasersize_x = 7;
             erasersize_y = 7;
-        }       
-        
+        }
+
         private void eraser3_panel_MouseClick(object sender, MouseEventArgs e)
         {
             eraser1_panel.ForeColor = Color.LightGray;
@@ -507,7 +527,7 @@ namespace PaintProgram
             erasersize_y = 9;
         }
 
-        
+
         private void eraser4_panel_MouseClick(object sender, MouseEventArgs e)
         {
             eraser1_panel.ForeColor = Color.LightGray;
@@ -543,9 +563,11 @@ namespace PaintProgram
             colorDialog1.ShowDialog();
             chosen = colorDialog1.Color;
             pb_colors.Image = colorbox.show_color_chosen(pixel, chosen);
-            
+
         }
-     
-        }      
+
+
+
+    }      
    }    
 
