@@ -21,8 +21,8 @@ namespace PaintProgram
     {
         const int WIIMOTE_RAW_X = 1023; //values reported according to Wiili
         const int WIIMOTE_RAW_Y = 767;
-        int x_dim = 640, y_dim = 480;       //dimensions of image
-        float scale_x = 640 / WIIMOTE_RAW_X, scale_y = 480 / WIIMOTE_RAW_Y;
+        int x_dim, y_dim;       //dimensions of image
+        float scale_x, scale_y;
         Image img;
         Graphics g;
         Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
@@ -54,11 +54,15 @@ namespace PaintProgram
 
         public Bitmap drawCursorPoints(WiimoteState ws)
         {
+            //WIIMOTE_RAW_X = 1023; //values reported according to Wiili
+            //WIIMOTE_RAW_Y = 767;
+            x_dim = 640; y_dim = 480;       //dimensions of image
+            scale_x = 640 / WIIMOTE_RAW_X; scale_y = 480 / WIIMOTE_RAW_Y;
             g = Graphics.FromImage(b);
             if (ws.IRState.Found1)
-                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1 * scale_x), (int)(ws.IRState.RawY1 * scale_y), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
+                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1), (int)(ws.IRState.RawY1), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
             if (ws.IRState.Found2)
-                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2 * scale_x), (int)(ws.IRState.RawY2 * scale_y), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
+                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2), (int)(ws.IRState.RawY2), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
             if (ws.IRState.Found3)
                 g.DrawEllipse(new Pen(Color.Yellow), (int)(ws.IRState.RawX3 * scale_x), (int)(ws.IRState.RawY3 * scale_y), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
             if (ws.IRState.Found4)
@@ -115,7 +119,6 @@ namespace PaintProgram
             colorbox.FillRectangle(new SolidBrush(chosen), 22, 7, 50, 35);
             return pic;
         }
-
         
         //So, Jeff made it to where this creates a square, only problem was it made multiple squares
         //I fixed it by creating a clone of the image being sent in and then everytime it comes into this function
@@ -150,7 +153,6 @@ namespace PaintProgram
             return temppic;
         }
 
-
         public Image circle_function(Image pic, Point initial_pos, int pos_x, int pos_y, Color chosen)
         {
             Image temppic = (Image) pic.Clone();
@@ -181,9 +183,7 @@ namespace PaintProgram
 
             circle.DrawEllipse(new Pen(chosen), rect);
             return temppic;
-        }
-
-     
+        }     
 
         public void setNewBitmap(Bitmap b)
         {
