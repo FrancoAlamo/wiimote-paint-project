@@ -52,13 +52,10 @@ namespace PaintProgram
 
         }
 
-
-
         public ResizeImage()
         {
             
         }
-
 
         public void Resize_movement(MouseEventArgs e, PictureBox Pic)
         {
@@ -114,7 +111,6 @@ namespace PaintProgram
             //DoResizing(Pic.Handle);
         }
 
-
         public void Resize_movement_panel(MouseEventArgs e, Panel panel)
         {
             if ((e.X < 5) && (e.Y < 5))
@@ -169,7 +165,6 @@ namespace PaintProgram
 
             //DoResizing(Pic.Handle);
         }
-
 
         public void DoResizing(IntPtr ok)
         {

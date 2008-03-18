@@ -86,12 +86,12 @@ namespace PaintProgram
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
-            //g_lib = new graphicsLib(640, 480, b); //todo: set with method
-            //g = Graphics.FromImage(b);
-            //wm.Connect();
-            //wm.SetReportType(Wiimote.InputReport.IRAccel, true);
-            //wm.SetLEDs(false, true, true, false);
+            wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
+            g_lib = new graphicsLib(640, 480, b); //todo: set with method
+            g = Graphics.FromImage(b);
+            wm.Connect();
+            wm.SetReportType(Wiimote.InputReport.IRAccel, true);
+            wm.SetLEDs(false, true, true, false);
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -346,7 +346,6 @@ namespace PaintProgram
 
         }
 
-
         private void Form1_Resize(object sender, EventArgs e)
         {
 
@@ -367,7 +366,6 @@ namespace PaintProgram
         {
             printDialog1.ShowDialog();
         }
-
 
 
         //Following four "functions" display a little message when the user hovers over the button
@@ -435,8 +433,6 @@ namespace PaintProgram
                    "Check the path to the image file.");
             }
         }
-
-
 
         private void Eraser_btn_Click(object sender, EventArgs e)
         {
@@ -538,7 +534,6 @@ namespace PaintProgram
             erasersize_y = 9;
         }
 
-
         private void eraser4_panel_MouseClick(object sender, MouseEventArgs e)
         {
             eraser1_panel.ForeColor = Color.LightGray;
@@ -557,7 +552,7 @@ namespace PaintProgram
         {
             WiimoteState ws = args.WiimoteState;
             pb_image2.Image = g_lib.drawCursorPoints(ws);
-
+            System.Windows.Forms.Cursor.Position = new System.Drawing.Point(ws.IRState.RawX1, ws.IRState.RawY1);
         }
 
         private void wm_WiimoteChanged(object sender, WiimoteChangedEventArgs args)
@@ -578,17 +573,11 @@ namespace PaintProgram
 
         }
 
-
         private void pb_image2_MouseEnter(object sender, EventArgs e)
         {
             //     NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_S, ref nul);
          //   ResizablePictureBox modify = new ResizablePictureBox();
             
         }
-
-
-
-
     }      
-   }    
-
+   }
