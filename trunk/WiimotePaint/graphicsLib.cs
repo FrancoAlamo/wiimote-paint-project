@@ -64,9 +64,9 @@ namespace PaintProgram
             if (ws.IRState.Found2)
                 g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2), (int)(ws.IRState.RawY2), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
             if (ws.IRState.Found3)
-                g.DrawEllipse(new Pen(Color.Yellow), (int)(ws.IRState.RawX3 * scale_x), (int)(ws.IRState.RawY3 * scale_y), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
+                g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawX3), (int)(ws.IRState.RawY3), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
             if (ws.IRState.Found4)
-                g.DrawEllipse(new Pen(Color.Orange), (int)(ws.IRState.RawX4 * scale_x), (int)(ws.IRState.RawY4 * scale_y), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
+                g.DrawEllipse(new Pen(Color.Black), (int)(ws.IRState.RawX4), (int)(ws.IRState.RawY4), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
             if (ws.IRState.Found1 && ws.IRState.Found2)
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX * scale_x), (int)(ws.IRState.RawMidY * scale_y), 2, 2);
             return b;

@@ -44,6 +44,9 @@ namespace PaintProgram
         bool rectangle_click = false;
         bool pencil_click = false;
         bool circle_click = false;
+
+
+        static int enter = 0;
         string CurrentFile; // Takes the path from the currently saved or opened file
         Image img;
         // Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
@@ -53,6 +56,7 @@ namespace PaintProgram
         Graphics g;
         graphicsLib colorbox = new graphicsLib();
         graphicsLib g_lib = new graphicsLib(640, 480);
+        WiimoteState globalWs;
 
         public Form1()
         {
@@ -372,7 +376,15 @@ namespace PaintProgram
 
         private void Cut_btn_MouseHover(object sender, EventArgs e)
         {
+            enter += 1;
+            if (enter == 5)
+            {
+                Cut_btn.Click += new EventHandler(Cut_btn_Click);
+                
+                enter = 0;
+            }
             toolTip1.SetToolTip(this.Cut_btn, "Cut Tool");
+
         }
 
         private void Magnify_btn_MouseHover(object sender, EventArgs e)
@@ -547,12 +559,51 @@ namespace PaintProgram
             erasersize_x = 12;
             erasersize_y = 12;
         }
+        public const int MOUSEEVENTF_MOVE = 0x01;
+        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        public const int MOUSEEVENTF_LEFTUP = 0x04;
+        public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        public const int MOUSEEVENTF_RIGHTUP = 0x10;
+        public const int MOUSEEVENTF_MIDDLEDOWN = 0x20;
+        public const int MOUSEEVENTF_MIDDLEUP = 0x40;
+        public const int MOUSEEVENTF_ABSOLUTE = 0x8000;
+
+        [DllImport("user32.dll")]
+        private static extern void mouse_event(
+        long dwFlags, // motion and click options
+        long dx, // horizontal position or change
+        long dy, // vertical position or change
+        long dwData, // wheel movement
+        long dwExtraInfo // application-defined information
+        );
 
         private void UpdateWiimoteState(WiimoteChangedEventArgs args)
         {
-            WiimoteState ws = args.WiimoteState;
-            pb_image2.Image = g_lib.drawCursorPoints(ws);
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point(ws.IRState.RawX1, ws.IRState.RawY1);
+            double seperation;
+            object nothing = new object(); EventArgs nothing2 = new EventArgs() ;
+                WiimoteState ws = args.WiimoteState;
+                globalWs = ws;
+                pb_image2.Image = g_lib.drawCursorPoints(ws);
+                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(ws.IRState.RawX1, ws.IRState.RawY1);
+
+                seperation = Math.Abs(Math.Sqrt(
+                    (ws.IRState.RawX1 - ws.IRState.RawX2) * (ws.IRState.RawX1 - ws.IRState.RawX2)
+                    + (ws.IRState.RawY1 - ws.IRState.RawY2) * (ws.IRState.RawY1 - ws.IRState.RawY2)));
+
+
+                /*if (seperation < 20)
+                {                   
+                    mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                }*/
+
+                if (seperation < 20)
+                {
+                    mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                }
+                else
+                {
+                    mouse_event(MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                }
         }
 
         private void wm_WiimoteChanged(object sender, WiimoteChangedEventArgs args)
@@ -579,5 +630,25 @@ namespace PaintProgram
          //   ResizablePictureBox modify = new ResizablePictureBox();
             
         }
+
+        private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        /*private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
+        {
+            //WiimoteState ws = args.WiimoteState;
+            EventArgs nothing = new EventArgs();
+            double seperation = Math.Abs(Math.Sqrt(
+                (globalWs.IRState.RawX1 - globalWs.IRState.RawX2) ^ 2 + (globalWs.IRState.RawY1 - globalWs.IRState.RawY2) ^ 2));
+
+
+            if (seperation < 10)
+            {
+                rectangle_btn_Click(sender, e);
+                //System.Windows.Forms.Control.Click.Button = true;
+            }
+        }*/
     }      
    }
