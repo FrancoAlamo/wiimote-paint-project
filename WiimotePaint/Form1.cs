@@ -234,7 +234,8 @@ namespace PaintProgram
         private void pb_image2_MouseClick(object sender, MouseEventArgs e)
         {
             graphicsLib erase = new graphicsLib();
-            graphicsLib pencil = new graphicsLib(); ;
+            graphicsLib pencil = new graphicsLib();
+            graphicsLib fill = new graphicsLib();
             Point current_pos = Control.MousePosition;
             mouse_is_down = true;
             //if the eraser tool is chosen, then call the erase function
@@ -246,12 +247,12 @@ namespace PaintProgram
             {
                 pb_image2.Image = pencil.pencil_function(b, temp_pos, e.X, e.Y, chosen);
             }
-            else if (cut_click)
+            else if (fill_click)
             {
-
+                Color temp = b.GetPixel(e.X, e.Y);
+                //pb_image2.Image = fill.fill_function(b, e.X, e.Y, chosen, temp);
             }
-            
-
+            //System.Windows.Forms.Cursor.Position = new System.Drawing.Point(0, 0);
         }
 
         private void pb_image2_MouseUp(object sender, MouseEventArgs e)
@@ -413,7 +414,7 @@ namespace PaintProgram
             //      colorDialog1.ShowDialog();
             //      chosen = colorDialog1.Color;
             eraser_box.Visible = false;
-            try
+            /*try
             {
                 // Retrieve the image.
                 //   image1 = new Bitmap(@"C:\Documents and Settings\All Users\" 
@@ -443,7 +444,7 @@ namespace PaintProgram
             {
                 MessageBox.Show("There was an error." +
                    "Check the path to the image file.");
-            }
+            }*/
         }
 
         private void Eraser_btn_Click(object sender, EventArgs e)
@@ -596,13 +597,27 @@ namespace PaintProgram
                     mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
                 }*/
 
-                if (seperation < 20)
+                if (seperation < 30)
                 {
-                    mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                    if (mouse_is_down == true)
+                    {
+                        mouse_event(MOUSEEVENTF_MOVE, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                    }
+                    else
+                    {
+                        mouse_is_down = true;
+                        mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                        //mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                    }
                 }
                 else
                 {
-                    mouse_event(MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                    if (mouse_is_down == true)
+                    {
+                        mouse_is_down = false;
+                        mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                        //mouse_event(MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                    }
                 }
         }
 
