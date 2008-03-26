@@ -52,6 +52,7 @@ namespace PaintProgram
             y_dim = y;
         }
 
+        /*    Remarked to test without drawing the ellipses
         public Bitmap drawCursorPoints(WiimoteState ws)
         {
             //WIIMOTE_RAW_X = 1023; //values reported according to Wiili
@@ -71,7 +72,8 @@ namespace PaintProgram
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX * scale_x), (int)(ws.IRState.RawMidY * scale_y), 2, 2);
             return b;
         }
-
+        */
+         
         public Image eraser_function(Image pic, Point temp, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
         {
             eraser = Graphics.FromImage(pic);
@@ -107,6 +109,8 @@ namespace PaintProgram
         {
             pixel.SetPixel(20, 30, Color.White);
             pencil = Graphics.FromImage(pic);
+            //pencil.DrawEllipse(new Pen(chosen), pos_x, pos_y, 1, 1);
+            //pencil.FillEllipse(new SolidBrush(chosen), pos_x, pos_y, 1, 1);
             pencil.DrawLine(new Pen(chosen), temp.X, temp.Y, pos_x, pos_y);
             return pic;
         }

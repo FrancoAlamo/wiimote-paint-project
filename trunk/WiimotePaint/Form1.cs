@@ -56,6 +56,8 @@ namespace PaintProgram
         Graphics g;
         graphicsLib colorbox = new graphicsLib();
         graphicsLib g_lib = new graphicsLib(640, 480);
+        double seperation;
+        int inout = 0;
         WiimoteState globalWs;
 
         public Form1()
@@ -70,6 +72,12 @@ namespace PaintProgram
             pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
         }
 
+       /* protected override void MouseClick(MouseEventArgs e)
+        {
+            if (1 == 1)
+                MouseClick += MouseClick;
+        }
+        */
         public void default_clicks()
         {
             eraser_click = false;
@@ -580,42 +588,73 @@ namespace PaintProgram
 
         private void UpdateWiimoteState(WiimoteChangedEventArgs args)
         {
-            double seperation;
+            
             object nothing = new object(); EventArgs nothing2 = new EventArgs() ;
                 WiimoteState ws = args.WiimoteState;
                 globalWs = ws;
-                pb_image2.Image = g_lib.drawCursorPoints(ws);
-                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(ws.IRState.RawX1, ws.IRState.RawY1);
-
-                seperation = Math.Abs(Math.Sqrt(
-                    (ws.IRState.RawX1 - ws.IRState.RawX2) * (ws.IRState.RawX1 - ws.IRState.RawX2)
-                    + (ws.IRState.RawY1 - ws.IRState.RawY2) * (ws.IRState.RawY1 - ws.IRState.RawY2)));
+            int lastIRStateX = ws.IRState.RawX1;
+            int lastIRStateY = ws.IRState.RawY1;
+                //pb_image2.Image = g_lib.drawCursorPoints(ws);
+                seperation = seperation;
+                if (ws.IRState.Found1)
+                {
+                    lastIRStateX = ws.IRState.RawX1;
+                    lastIRStateY = ws.IRState.RawY1;
+                    if (ws.IRState.Found2)
+                    {
+                        seperation = Math.Abs(Math.Sqrt(
+                                (ws.IRState.RawX1 - ws.IRState.RawX2) * (ws.IRState.RawX1 - ws.IRState.RawX2)
+                            + (ws.IRState.RawY1 - ws.IRState.RawY2) * (ws.IRState.RawY1 - ws.IRState.RawY2)));
+                    }
+                    System.Windows.Forms.Cursor.Position = new System.Drawing.Point(ws.IRState.RawX1, ws.IRState.RawY1);
+                }
+                else if (ws.IRState.Found2)
+                {
+                    lastIRStateX = ws.IRState.RawX2;
+                    lastIRStateY = ws.IRState.RawY2;
+                    System.Windows.Forms.Cursor.Position = new System.Drawing.Point(ws.IRState.RawX2, ws.IRState.RawY2);
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Position = new System.Drawing.Point(lastIRStateX, lastIRStateY);
+                }
 
 
                 /*if (seperation < 20)
                 {                   
                     mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
                 }*/
-
-                if (seperation < 30)
+                //mouse_event(MOUSEEVENTF_MOVE, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                if (seperation < 40)
                 {
                     if (mouse_is_down == true)
                     {
+                        mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
                         mouse_event(MOUSEEVENTF_MOVE, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
                     }
                     else
                     {
-                        mouse_is_down = true;
-                        mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
-                        //mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                        //mouse_is_down = true;
+                        if(inout == 0)
+                            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                        //if (magnify_click == true || cut_click == true || pencil_click == true
+                        //    || rectangle_click == true || eraser_click == true || circle_click == true)
+                        if(inout == 1)
+                        {
+                            mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+
+                        }
                     }
                 }
                 else
                 {
                     if (mouse_is_down == true)
                     {
+                        //mouse_is_down = false;
+                        //mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                        mouse_event(MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
                         mouse_is_down = false;
-                        mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
+                        //Cursor.Current = Cursors.Default;
                         //mouse_event(MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
                     }
                 }
@@ -643,13 +682,20 @@ namespace PaintProgram
         {
             //     NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_S, ref nul);
          //   ResizablePictureBox modify = new ResizablePictureBox();
-            
+            inout = 1;
         }
 
         private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
         {
 
         }
+
+        private void pb_image2_MouseLeave(object sender, EventArgs e)
+        {
+            inout = 0;
+            mouse_is_down = false;
+        }
+
 
         /*private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
         {
