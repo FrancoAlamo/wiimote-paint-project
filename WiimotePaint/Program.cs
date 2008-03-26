@@ -11,10 +11,12 @@ namespace PaintProgram
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             try
             {
                 Application.Run(new Form1());
@@ -23,6 +25,7 @@ namespace PaintProgram
             {
                 Console.WriteLine("{0} Caught exception #1.", e);
             }
+
         }
     }
 }

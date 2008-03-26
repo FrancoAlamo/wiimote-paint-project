@@ -212,14 +212,67 @@ namespace PaintProgram
                     break;
                 case ResizingMode.None:
                     NativeCalls.ReleaseCapture(hwnd);
-                    //NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGMOVE, ref nul);
+                    break;
+
+            }
+            NativeWindow.FromHandle(ok);
+            ok = hwnd;
+            // = NativeWindow.FromHandle(hwnd).Handle;
+         //   NativeWindow.FromHandle(ok).AssignHandle(hwnd);
+        }
+
+
+        public void DoResizingCut(IntPtr ok)
+        {
+
+
+            IntPtr hwnd = ok;
+            int nul = 0;
+
+
+            switch (_resizeMode)
+            {
+                case ResizingMode.Bottom:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_S, ref nul);
+                    break;
+                case ResizingMode.Right:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_E, ref nul);
+                    break;
+                case ResizingMode.BottomRight:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_SE, ref nul);
+                    break;
+
+                case ResizingMode.TopRight:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_NE, ref nul);
+                    break;
+                case ResizingMode.Top:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_N, ref nul);
+                    break;
+                case ResizingMode.TopLeft:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_NW, ref nul);
+                    break;
+                case ResizingMode.Left:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_W, ref nul);
+                    break;
+
+                case ResizingMode.BottomLeft:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGSIZE_SW, ref nul);
+                    break;
+                case ResizingMode.None:
+                    NativeCalls.ReleaseCapture(hwnd);
+                    NativeCalls.SendMessage(hwnd, NativeCalls.WM_SYSCOMMAND, NativeCalls.SC_DRAGMOVE, ref nul);
                     break;
 
             }
         }
-
-
-        
           
 
 
