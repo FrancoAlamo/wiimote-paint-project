@@ -77,16 +77,8 @@ namespace PaintProgram
         public Image eraser_function(Image pic, Point temp, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
         {
             eraser = Graphics.FromImage(pic);
-            Point pointul = new Point(); Point pointur = new Point(); Point pointbl = new Point(); Point pointbr = new Point();
-            eraser.DrawRectangle(new Pen(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
-            eraser.FillRectangle(new SolidBrush(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
-            /*pointul.X = temp.X; pointul.Y = temp.Y; 
-            pointbl.X = temp.X; pointbl.Y = temp.Y + erasersize_y;
-            pointur.X = pos_x - (erasersize_x/2); pointur.Y = pos_y - (erasersize_y / 2);
-            pointbr.X = pos_x - (erasersize_x/2); pointbr.Y = pos_y + (erasersize_y / 2);
-            Point[] pointArray = {pointul, pointur, pointbr, pointbl};
-            eraser.DrawPolygon(new Pen(Color.White), pointArray);
-            eraser.FillPolygon(new SolidBrush(Color.White), pointArray);*/
+            //Point pointul = new Point(); Point pointur = new Point(); Point pointbl = new Point(); Point pointbr = new Point();
+            eraser.DrawLine(new Pen(Color.White, (float)erasersize_y), temp.X, temp.Y, pos_x, pos_y);
             return pic;
         }
 
@@ -109,8 +101,6 @@ namespace PaintProgram
         {
             pixel.SetPixel(20, 30, Color.White);
             pencil = Graphics.FromImage(pic);
-            //pencil.DrawEllipse(new Pen(chosen), pos_x, pos_y, 1, 1);
-            //pencil.FillEllipse(new SolidBrush(chosen), pos_x, pos_y, 1, 1);
             pencil.DrawLine(new Pen(chosen), temp.X, temp.Y, pos_x, pos_y);
             return pic;
         }
