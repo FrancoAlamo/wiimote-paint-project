@@ -27,7 +27,7 @@ namespace PaintProgram
         Graphics g;
         Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
         Bitmap pixel = new Bitmap(100, 200);
-        Graphics circle, eraser, pencil, rectangle;  // Makes the eraser pencil and rectangle graphics which will later 
+        Graphics function;  // Makes the eraser pencil and rectangle graphics which will later 
                                              // be a square used to perform each function
 
 
@@ -52,14 +52,15 @@ namespace PaintProgram
             y_dim = y;
         }
 
-        /*    Remarked to test without drawing the ellipses
-        public Bitmap drawCursorPoints(WiimoteState ws)
+
+        public Image drawCursorPoints(WiimoteState ws, Image pic)
         {
-            //WIIMOTE_RAW_X = 1023; //values reported according to Wiili
-            //WIIMOTE_RAW_Y = 767;
+            Image temppic;
+            temppic = (Image)pic.Clone();
             x_dim = 640; y_dim = 480;       //dimensions of image
             scale_x = 640 / WIIMOTE_RAW_X; scale_y = 480 / WIIMOTE_RAW_Y;
-            g = Graphics.FromImage(b);
+            g = Graphics.FromImage(temppic);
+            /*
             if (ws.IRState.Found1)
                 g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1), (int)(ws.IRState.RawY1), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
             if (ws.IRState.Found2)
@@ -68,17 +69,17 @@ namespace PaintProgram
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawX3), (int)(ws.IRState.RawY3), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
             if (ws.IRState.Found4)
                 g.DrawEllipse(new Pen(Color.Black), (int)(ws.IRState.RawX4), (int)(ws.IRState.RawY4), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
+             */ 
             if (ws.IRState.Found1 && ws.IRState.Found2)
-                g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX * scale_x), (int)(ws.IRState.RawMidY * scale_y), 2, 2);
-            return b;
+                g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX), (int)(ws.IRState.RawMidY), 7, 7);
+            return temppic;
         }
-        */
+
          
         public Image eraser_function(Image pic, Point temp, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
         {
-            eraser = Graphics.FromImage(pic);
-            //Point pointul = new Point(); Point pointur = new Point(); Point pointbl = new Point(); Point pointbr = new Point();
-            eraser.DrawLine(new Pen(Color.White, (float)erasersize_y), temp.X, temp.Y, pos_x, pos_y);
+            function = Graphics.FromImage(pic);
+            function.DrawLine(new Pen(Color.White, (float)erasersize_y), temp.X, temp.Y, pos_x, pos_y);
             return pic;
         }
 
@@ -86,12 +87,12 @@ namespace PaintProgram
         {
             pixel.SetPixel(20, 30, Color.White);
             Rectangle rect = new Rectangle(pos_x, pos_y, erasersize_x, erasersize_y);
-            rectangle = Graphics.FromImage(pic);
+            function = Graphics.FromImage(pic);
             GraphicsPath p = new GraphicsPath();
             p.StartFigure();
             //rectangle.DrawRectangle(new Pen(Color.Black),
-            rectangle.DrawRectangle(new Pen(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
-            rectangle.FillRectangle(new SolidBrush(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
+            function.DrawRectangle(new Pen(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
+            function.FillRectangle(new SolidBrush(Color.White), pos_x, pos_y, erasersize_x, erasersize_y);
             p.AddRectangle(rect);
             
             return pic;
@@ -99,9 +100,8 @@ namespace PaintProgram
 
         public Image pencil_function(Image pic, Point temp, int pos_x, int pos_y, Color chosen)
         {
-            pixel.SetPixel(20, 30, Color.White);
-            pencil = Graphics.FromImage(pic);
-            pencil.DrawLine(new Pen(chosen), temp.X, temp.Y, pos_x, pos_y);
+            function = Graphics.FromImage(pic);
+            function.DrawLine(new Pen(chosen), temp.X, temp.Y, pos_x, pos_y);
             return pic;
         }
 
@@ -121,28 +121,28 @@ namespace PaintProgram
         {
             Image temppic;
             temppic = (Image) pic.Clone();
-            rectangle = Graphics.FromImage(temppic);
+            function = Graphics.FromImage(temppic);
             int width = pos_x - initial_pos.X;
             int heigth = pos_y - initial_pos.Y;
             if (width < 0 && heigth < 0)
             {
                 width = initial_pos.X - pos_x;
                 heigth = initial_pos.Y - pos_y;
-                rectangle.DrawRectangle(new Pen(chosen), pos_x, pos_y, width, heigth);
+                function.DrawRectangle(new Pen(chosen), pos_x, pos_y, width, heigth);
             }
             else if (heigth < 0)
             {
                 heigth = initial_pos.Y - pos_y;
-                rectangle.DrawRectangle(new Pen(chosen), initial_pos.X, pos_y, width, heigth);
+                function.DrawRectangle(new Pen(chosen), initial_pos.X, pos_y, width, heigth);
             }
             else if (width < 0)
             {
                 width = initial_pos.X - pos_x;
-                rectangle.DrawRectangle(new Pen(chosen), pos_x, initial_pos.Y, width, heigth);
+                function.DrawRectangle(new Pen(chosen), pos_x, initial_pos.Y, width, heigth);
             }
             else
             {
-                rectangle.DrawRectangle(new Pen(chosen), initial_pos.X, initial_pos.Y, width, heigth);
+                function.DrawRectangle(new Pen(chosen), initial_pos.X, initial_pos.Y, width, heigth);
             }
             return temppic;
         }
@@ -152,7 +152,7 @@ namespace PaintProgram
             Image temppic = (Image) pic.Clone();
             int width = pos_x - initial_pos.X;
             int height = pos_y - initial_pos.Y;
-            circle = Graphics.FromImage(temppic);
+            function = Graphics.FromImage(temppic);
             Rectangle rect;
             if (width < 0 && height < 0)
             {
@@ -175,7 +175,7 @@ namespace PaintProgram
                 rect = new Rectangle(initial_pos.X, initial_pos.Y, width, height);
             }
 
-            circle.DrawEllipse(new Pen(chosen), rect);
+            function.DrawEllipse(new Pen(chosen), rect);
             return temppic;
         }     
 

@@ -59,7 +59,7 @@ namespace PaintProgram
         //graphicsLib g_lib = new graphicsLib(640, 480);
         graphicsLib g_lib = new graphicsLib(1280, 800);
         double seperation;
-        int inout = 0;
+        bool OutofPicBox = false;
         bool UPorDown = false;
         bool wasSeperated = true;
         WiimoteState globalWs;
@@ -631,12 +631,18 @@ namespace PaintProgram
                 currentIRstateX = lastIRStateX;
                 currentIRstateY = lastIRStateY;
             }
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX + 86), (currentIRstateY + 44));
+            
+            //if (false == OutofPicBox)
+                //System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
+                pb_image2.Image = shape.drawCursorPoints(ws, b);
+            //else
+              //  System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
+            
             Seplbl.Text = "Sep: " + seperation.ToString();
             lastIRStateX = currentIRstateX;
             lastIRStateY = currentIRstateY;
 
-            if (seperation < 60)
+            if (seperation < 60 && OutofPicBox == false)
             {
                 if (eraser_click)
                 {
@@ -695,31 +701,14 @@ namespace PaintProgram
                     }
                 }
                 wasSeperated = false;
-                if (inout == 0)//outside picturebox
-                {
-                    mouse_event(MOUSEEVENTF_LEFTDOWN, currentIRstateX, currentIRstateY, 0, 0);
-                    mouse_event(MOUSEEVENTF_LEFTUP, currentIRstateX, currentIRstateY, 0, 0);
-                }
                 //end
                 //}
-
-                /*    
-                else //first click
-                {
-                    mouse_is_down = true;
-                    if (inout == 0)//outside picturebox
-                    {
-                        mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
-                        mouse_event(MOUSEEVENTF_LEFTUP, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
-                    }
-                    else
-                    {
-                        if(!UPorDown) //UPorDown signifies wheter or not the mouse has already been pressed down
-                            mouse_event(MOUSEEVENTF_LEFTDOWN, ws.IRState.RawX1, ws.IRState.RawY1, 0, 0);
-                        UPorDown = true;
-                    }
-                }
-                */
+            }
+            else if(seperation < 60 && OutofPicBox == true)//outside picturebox
+            {
+                mouse_event(MOUSEEVENTF_LEFTDOWN, currentIRstateX, currentIRstateY, 0, 0);
+                mouse_event(MOUSEEVENTF_LEFTUP, currentIRstateX, currentIRstateY, 0, 0);
+                wasSeperated = false;
             }
             else
             {
@@ -776,7 +765,8 @@ namespace PaintProgram
 
         private void pb_image2_MouseEnter(object sender, EventArgs e)
         {
-            inout = 1;
+            OutofPicBox = false;
+            Testlbl.Text = "Mouse entered Picture Box";
         }
 
         private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
@@ -786,8 +776,9 @@ namespace PaintProgram
 
         private void pb_image2_MouseLeave(object sender, EventArgs e)
         {
-            inout = 0;
+            OutofPicBox = true;
             mouse_is_down = false;
+            Testlbl.Text = "Mouse left Picture Box";
         }
 
 
