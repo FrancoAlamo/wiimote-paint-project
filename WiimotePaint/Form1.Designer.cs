@@ -475,6 +475,7 @@
             this.pb_image2.TabIndex = 0;
             this.pb_image2.TabStop = false;
             this.pb_image2.MouseLeave += new System.EventHandler(this.pb_image2_MouseLeave);
+            this.pb_image2.MouseEnter += new System.EventHandler(this.pb_image2_MouseEnter);
             this.pb_image2.Paint += new System.Windows.Forms.PaintEventHandler(this.pb_image2_Paint);
             //this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
             // 
