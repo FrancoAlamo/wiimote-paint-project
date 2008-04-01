@@ -23,7 +23,7 @@ namespace PaintProgram
         const int WIIMOTE_RAW_Y = 767;
         int x_dim, y_dim;       //dimensions of image
         float scale_x, scale_y;
-        Image img;
+        //Image img;
         Graphics g;        
         Graphics function;  // Makes the eraser pencil and rectangle graphics which will later 
                                              // be a square used to perform each function
@@ -57,13 +57,13 @@ namespace PaintProgram
             g = Graphics.FromImage(temppic);
             
             if (ws.IRState.Found1)
-                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1*scale_x-142), (int)(ws.IRState.RawY1*scale_y), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
+                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1*scale_x - 142), (int)(ws.IRState.RawY1*scale_y), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
             if (ws.IRState.Found2)
-                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2*scale_x-142), (int)(ws.IRState.RawY2*scale_y), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
+                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2*scale_x - 142), (int)(ws.IRState.RawY2*scale_y), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
             if (ws.IRState.Found3)
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawX3*scale_x - 142), (int)(ws.IRState.RawY3*scale_y), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
             if (ws.IRState.Found4)
-                g.DrawEllipse(new Pen(Color.Black), (int)(ws.IRState.RawX4*scale_x), (int)(ws.IRState.RawY4*scale_y), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
+                g.DrawEllipse(new Pen(Color.Black), (int)(ws.IRState.RawX4*scale_x - 142), (int)(ws.IRState.RawY4*scale_y), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
             /*
             if (ws.IRState.Found1 && ws.IRState.Found2)
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX), (int)(ws.IRState.RawMidY), 7, 7);
@@ -101,9 +101,24 @@ namespace PaintProgram
             return pic;
         }
 
+        public Image paint_function(Image pic, Point temp, int pos_x, int pos_y, Color chosen)
+        {
+            function = Graphics.FromImage(pic);
+            function.DrawLine(new Pen(chosen, 5), temp.X, temp.Y, pos_x, pos_y);
+            return pic;
+        }
+
+        public Image line_function(Image pic, Point initial_pos, int pos_x, int pos_y, Color chosen)
+        {
+            Image temppic;
+            temppic = (Image)pic.Clone();
+            function = Graphics.FromImage(temppic);
+            function.DrawLine(new Pen(chosen), initial_pos.X, initial_pos.Y, pos_x, pos_y);
+            return pic;
+        }
+
         public Image show_color_chosen(Image pic, Color chosen)
         {
-            
             Graphics colorbox = Graphics.FromImage(pic);
             colorbox.DrawRectangle(new Pen(chosen), 22, 7, 50, 35);
             colorbox.FillRectangle(new SolidBrush(chosen), 22, 7, 50, 35);
@@ -113,7 +128,7 @@ namespace PaintProgram
         //So, Jeff made it to where this creates a square, only problem was it made multiple squares
         //I fixed it by creating a clone of the image being sent in and then everytime it comes into this function
         //it is using the fresh pic, which is what we want to do.
-        public Image rectangle_function(Image pic, Point initial_pos, int pos_x, int pos_y, Color chosen)
+        public Image rectangle_function(Image pic, Point initial_pos, int pos_x, int pos_y, Color chosen, bool filled)
         {
             Image temppic;
             temppic = (Image) pic.Clone();
@@ -125,20 +140,28 @@ namespace PaintProgram
                 width = initial_pos.X - pos_x;
                 heigth = initial_pos.Y - pos_y;
                 function.DrawRectangle(new Pen(chosen), pos_x, pos_y, width, heigth);
+                if (filled)
+                    function.FillRectangle(new SolidBrush(chosen), pos_x, pos_y, width, heigth);
             }
             else if (heigth < 0)
             {
                 heigth = initial_pos.Y - pos_y;
                 function.DrawRectangle(new Pen(chosen), initial_pos.X, pos_y, width, heigth);
+                if (filled)
+                    function.FillRectangle(new SolidBrush(chosen), initial_pos.X, pos_y, width, heigth);
             }
             else if (width < 0)
             {
                 width = initial_pos.X - pos_x;
                 function.DrawRectangle(new Pen(chosen), pos_x, initial_pos.Y, width, heigth);
+                if (filled)
+                    function.FillRectangle(new SolidBrush(chosen), pos_x, initial_pos.Y, width, heigth);
             }
             else
             {
                 function.DrawRectangle(new Pen(chosen), initial_pos.X, initial_pos.Y, width, heigth);
+                if (filled)
+                    function.FillRectangle(new SolidBrush(chosen), initial_pos.X, initial_pos.Y, width, heigth);
             }
             return temppic;
         }
