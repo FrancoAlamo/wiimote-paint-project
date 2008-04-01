@@ -49,6 +49,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupbox1 = new System.Windows.Forms.GroupBox();
             this.Test3lbl = new System.Windows.Forms.Label();
+            this.Calibratebtn = new System.Windows.Forms.Button();
             this.Test2lbl = new System.Windows.Forms.Label();
             this.Testlbl = new System.Windows.Forms.Label();
             this.Seplbl = new System.Windows.Forms.Label();
@@ -67,6 +68,7 @@
             this.Fill_btn = new System.Windows.Forms.Button();
             this.Magnify_btn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Infotxt = new System.Windows.Forms.Label();
             this.pb_image2 = new System.Windows.Forms.PictureBox();
             this.pb_image = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -118,7 +120,7 @@
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -126,7 +128,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
@@ -134,14 +136,14 @@
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -149,7 +151,7 @@
             // 
             this.printToolStripMenuItem.Name = "printToolStripMenuItem";
             this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
             // 
@@ -157,7 +159,7 @@
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
             this.quitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.quitToolStripMenuItem.Text = "Exit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -177,25 +179,25 @@
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.selectAllToolStripMenuItem.Text = "Select All";
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // viewToolStripMenuItem
@@ -212,13 +214,13 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom in";
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom out";
             // 
             // aboutToolStripMenuItem
@@ -234,6 +236,7 @@
             this.groupbox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)));
             this.groupbox1.Controls.Add(this.Test3lbl);
+            this.groupbox1.Controls.Add(this.Calibratebtn);
             this.groupbox1.Controls.Add(this.Test2lbl);
             this.groupbox1.Controls.Add(this.Testlbl);
             this.groupbox1.Controls.Add(this.Seplbl);
@@ -246,9 +249,9 @@
             this.groupbox1.Controls.Add(this.Eraser_btn);
             this.groupbox1.Controls.Add(this.Fill_btn);
             this.groupbox1.Controls.Add(this.Magnify_btn);
-            this.groupbox1.Location = new System.Drawing.Point(8, 16);
+            this.groupbox1.Location = new System.Drawing.Point(0, 18);
             this.groupbox1.Name = "groupbox1";
-            this.groupbox1.Size = new System.Drawing.Size(78, 654);
+            this.groupbox1.Size = new System.Drawing.Size(140, 652);
             this.groupbox1.TabIndex = 1;
             this.groupbox1.TabStop = false;
             this.groupbox1.Enter += new System.EventHandler(this.groupBox1_Enter);
@@ -260,6 +263,16 @@
             this.Test3lbl.Name = "Test3lbl";
             this.Test3lbl.Size = new System.Drawing.Size(0, 13);
             this.Test3lbl.TabIndex = 8;
+            // 
+            // Calibratebtn
+            // 
+            this.Calibratebtn.Location = new System.Drawing.Point(15, 495);
+            this.Calibratebtn.Name = "Calibratebtn";
+            this.Calibratebtn.Size = new System.Drawing.Size(70, 32);
+            this.Calibratebtn.TabIndex = 1;
+            this.Calibratebtn.Text = "Calibrate";
+            this.Calibratebtn.UseVisualStyleBackColor = true;
+            this.Calibratebtn.Visible = false;
             // 
             // Test2lbl
             // 
@@ -280,7 +293,7 @@
             // Seplbl
             // 
             this.Seplbl.AutoSize = true;
-            this.Seplbl.Location = new System.Drawing.Point(1, 468);
+            this.Seplbl.Location = new System.Drawing.Point(6, 541);
             this.Seplbl.Name = "Seplbl";
             this.Seplbl.Size = new System.Drawing.Size(58, 13);
             this.Seplbl.TabIndex = 5;
@@ -290,18 +303,18 @@
             // 
             this.pb_colors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pb_colors.Location = new System.Drawing.Point(6, 264);
+            this.pb_colors.Location = new System.Drawing.Point(26, 397);
             this.pb_colors.Name = "pb_colors";
-            this.pb_colors.Size = new System.Drawing.Size(63, 76);
+            this.pb_colors.Size = new System.Drawing.Size(125, 76);
             this.pb_colors.TabIndex = 4;
             this.pb_colors.TabStop = false;
             this.pb_colors.Click += new System.EventHandler(this.pb_colors_Click);
             // 
             // Circle_btn
             // 
-            this.Circle_btn.Location = new System.Drawing.Point(4, 105);
+            this.Circle_btn.Location = new System.Drawing.Point(1, 172);
             this.Circle_btn.Name = "Circle_btn";
-            this.Circle_btn.Size = new System.Drawing.Size(34, 27);
+            this.Circle_btn.Size = new System.Drawing.Size(64, 54);
             this.Circle_btn.TabIndex = 2;
             this.Circle_btn.Text = "Circle";
             this.Circle_btn.UseVisualStyleBackColor = true;
@@ -312,9 +325,9 @@
             this.Pencil_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Pencil_btn.BackgroundImage")));
             this.Pencil_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Pencil_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Pencil_btn.Location = new System.Drawing.Point(38, 69);
+            this.Pencil_btn.Location = new System.Drawing.Point(66, 117);
             this.Pencil_btn.Name = "Pencil_btn";
-            this.Pencil_btn.Size = new System.Drawing.Size(37, 31);
+            this.Pencil_btn.Size = new System.Drawing.Size(64, 54);
             this.Pencil_btn.TabIndex = 0;
             this.Pencil_btn.UseVisualStyleBackColor = true;
             this.Pencil_btn.Click += new System.EventHandler(this.pencil_btn_Click);
@@ -322,14 +335,13 @@
             // Rectangle_btn
             // 
             this.Rectangle_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Rectangle_btn.BackgroundImage")));
-            this.Rectangle_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.Rectangle_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Rectangle_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Rectangle_btn.Location = new System.Drawing.Point(1, 69);
+            this.Rectangle_btn.Location = new System.Drawing.Point(1, 117);
             this.Rectangle_btn.Name = "Rectangle_btn";
-            this.Rectangle_btn.Size = new System.Drawing.Size(37, 31);
+            this.Rectangle_btn.Size = new System.Drawing.Size(64, 54);
             this.Rectangle_btn.TabIndex = 1;
             this.Rectangle_btn.UseVisualStyleBackColor = true;
-            this.Rectangle_btn.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Rectangle_btn_MouseMove);
             this.Rectangle_btn.Click += new System.EventHandler(this.rectangle_btn_Click);
             // 
             // eraser_box
@@ -340,7 +352,7 @@
             this.eraser_box.Controls.Add(this.eraser3_panel);
             this.eraser_box.Controls.Add(this.label1);
             this.eraser_box.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.eraser_box.Location = new System.Drawing.Point(15, 138);
+            this.eraser_box.Location = new System.Drawing.Point(45, 259);
             this.eraser_box.Name = "eraser_box";
             this.eraser_box.Size = new System.Drawing.Size(50, 120);
             this.eraser_box.TabIndex = 1;
@@ -402,11 +414,12 @@
             // 
             // Cut_btn
             // 
+            this.Cut_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Cut_btn.BackgroundImage")));
+            this.Cut_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Cut_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Cut_btn.Image = ((System.Drawing.Image)(resources.GetObject("Cut_btn.Image")));
             this.Cut_btn.Location = new System.Drawing.Point(1, 7);
             this.Cut_btn.Name = "Cut_btn";
-            this.Cut_btn.Size = new System.Drawing.Size(37, 31);
+            this.Cut_btn.Size = new System.Drawing.Size(64, 54);
             this.Cut_btn.TabIndex = 0;
             this.Cut_btn.UseVisualStyleBackColor = true;
             this.Cut_btn.Click += new System.EventHandler(this.Cut_btn_Click);
@@ -415,10 +428,11 @@
             // Eraser_btn
             // 
             this.Eraser_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Eraser_btn.BackgroundImage")));
+            this.Eraser_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Eraser_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Eraser_btn.Location = new System.Drawing.Point(1, 38);
+            this.Eraser_btn.Location = new System.Drawing.Point(1, 62);
             this.Eraser_btn.Name = "Eraser_btn";
-            this.Eraser_btn.Size = new System.Drawing.Size(37, 31);
+            this.Eraser_btn.Size = new System.Drawing.Size(64, 54);
             this.Eraser_btn.TabIndex = 0;
             this.Eraser_btn.UseVisualStyleBackColor = true;
             this.Eraser_btn.Click += new System.EventHandler(this.Eraser_btn_Click);
@@ -429,9 +443,9 @@
             this.Fill_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Fill_btn.BackgroundImage")));
             this.Fill_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Fill_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Fill_btn.Location = new System.Drawing.Point(38, 38);
+            this.Fill_btn.Location = new System.Drawing.Point(66, 62);
             this.Fill_btn.Name = "Fill_btn";
-            this.Fill_btn.Size = new System.Drawing.Size(37, 31);
+            this.Fill_btn.Size = new System.Drawing.Size(64, 54);
             this.Fill_btn.TabIndex = 0;
             this.Fill_btn.UseVisualStyleBackColor = true;
             this.Fill_btn.Click += new System.EventHandler(this.Fill_btn_Click);
@@ -440,10 +454,11 @@
             // Magnify_btn
             // 
             this.Magnify_btn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Magnify_btn.BackgroundImage")));
+            this.Magnify_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Magnify_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Magnify_btn.Location = new System.Drawing.Point(38, 7);
+            this.Magnify_btn.Location = new System.Drawing.Point(66, 7);
             this.Magnify_btn.Name = "Magnify_btn";
-            this.Magnify_btn.Size = new System.Drawing.Size(37, 31);
+            this.Magnify_btn.Size = new System.Drawing.Size(64, 54);
             this.Magnify_btn.TabIndex = 0;
             this.Magnify_btn.UseVisualStyleBackColor = true;
             this.Magnify_btn.Click += new System.EventHandler(this.Magnify_btn_Click);
@@ -456,28 +471,39 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.groupBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.groupBox2.Controls.Add(this.Infotxt);
             this.groupBox2.Controls.Add(this.pb_image2);
             this.groupBox2.Controls.Add(this.pb_image);
-            this.groupBox2.Location = new System.Drawing.Point(86, 18);
+            this.groupBox2.Location = new System.Drawing.Point(89, 18);
             this.groupBox2.MinimumSize = new System.Drawing.Size(317, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1171, 945);
+            this.groupBox2.Size = new System.Drawing.Size(1168, 945);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
+            // 
+            // Infotxt
+            // 
+            this.Infotxt.AutoSize = true;
+            this.Infotxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Infotxt.Location = new System.Drawing.Point(83, 359);
+            this.Infotxt.Name = "Infotxt";
+            this.Infotxt.Size = new System.Drawing.Size(519, 20);
+            this.Infotxt.TabIndex = 2;
+            this.Infotxt.Text = "Place red ellipse in center of above circle, then click calibrate with mouse.";
+            this.Infotxt.Visible = false;
             // 
             // pb_image2
             // 
             this.pb_image2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pb_image2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_image2.Location = new System.Drawing.Point(6, 9);
+            this.pb_image2.InitialImage = null;
+            this.pb_image2.Location = new System.Drawing.Point(55, 8);
             this.pb_image2.Name = "pb_image2";
-            this.pb_image2.Size = new System.Drawing.Size(640, 480);
+            this.pb_image2.Size = new System.Drawing.Size(800, 600);
             this.pb_image2.TabIndex = 0;
             this.pb_image2.TabStop = false;
             this.pb_image2.MouseLeave += new System.EventHandler(this.pb_image2_MouseLeave);
-            this.pb_image2.MouseEnter += new System.EventHandler(this.pb_image2_MouseEnter);
             this.pb_image2.Paint += new System.Windows.Forms.PaintEventHandler(this.pb_image2_Paint);
-            //this.pb_image2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_image2_MouseUp);
+            this.pb_image2.MouseEnter += new System.EventHandler(this.pb_image2_MouseEnter);
             // 
             // pb_image
             // 
@@ -493,10 +519,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
-            // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
             // printDialog1
             // 
@@ -520,7 +542,7 @@
             this.panel1.Location = new System.Drawing.Point(91, 37);
             this.panel1.Name = "panel1";
             this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.panel1.Size = new System.Drawing.Size(641, 481);
+            this.panel1.Size = new System.Drawing.Size(800, 600);
             this.panel1.TabIndex = 2;
             // 
             // Form1
@@ -545,6 +567,7 @@
             this.eraser_box.ResumeLayout(false);
             this.eraser_box.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_image2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_image)).EndInit();
             this.ResumeLayout(false);
@@ -601,6 +624,8 @@
         private System.Windows.Forms.Label Testlbl;
         private System.Windows.Forms.Label Test3lbl;
         private System.Windows.Forms.Label Test2lbl;
+        private System.Windows.Forms.Button Calibratebtn;
+        private System.Windows.Forms.Label Infotxt;
 
         //Wiimote related objects:
 

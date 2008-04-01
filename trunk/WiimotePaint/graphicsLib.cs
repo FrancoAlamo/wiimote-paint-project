@@ -24,21 +24,16 @@ namespace PaintProgram
         int x_dim, y_dim;       //dimensions of image
         float scale_x, scale_y;
         Image img;
-        Graphics g;
-        Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
-        Bitmap pixel = new Bitmap(100, 200);
+        Graphics g;        
         Graphics function;  // Makes the eraser pencil and rectangle graphics which will later 
                                              // be a square used to perform each function
-
 
         //x and y are image dimensions
         public graphicsLib()
         {
         }
         public graphicsLib(int x, int y)
-        {
-            b = new Bitmap(x, y, PixelFormat.Format24bppRgb);
-            
+        {            
             x_dim = x;
             y_dim = y;
             scale_x = x / WIIMOTE_RAW_X;
@@ -47,7 +42,7 @@ namespace PaintProgram
 
         public graphicsLib(int x, int y, Bitmap b)
         {
-            this.b = b;
+            
             x_dim = x;
             y_dim = y;
         }
@@ -57,21 +52,22 @@ namespace PaintProgram
         {
             Image temppic;
             temppic = (Image)pic.Clone();
-            x_dim = 640; y_dim = 480;       //dimensions of image
-            scale_x = 640 / WIIMOTE_RAW_X; scale_y = 480 / WIIMOTE_RAW_Y;
+            x_dim = 1280; y_dim = 800;       //dimensions of image
+            scale_x = 1280 / WIIMOTE_RAW_X; scale_y = 800 / WIIMOTE_RAW_Y;
             g = Graphics.FromImage(temppic);
-            /*
+            
             if (ws.IRState.Found1)
-                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1), (int)(ws.IRState.RawY1), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
+                g.DrawEllipse(new Pen(Color.Red), (int)(ws.IRState.RawX1*scale_x-142), (int)(ws.IRState.RawY1*scale_y), ws.IRState.Size1 + 1, ws.IRState.Size1 + 1);
             if (ws.IRState.Found2)
-                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2), (int)(ws.IRState.RawY2), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
+                g.DrawEllipse(new Pen(Color.Blue), (int)(ws.IRState.RawX2*scale_x-142), (int)(ws.IRState.RawY2*scale_y), ws.IRState.Size2 + 1, ws.IRState.Size2 + 1);
             if (ws.IRState.Found3)
-                g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawX3), (int)(ws.IRState.RawY3), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
+                g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawX3*scale_x - 142), (int)(ws.IRState.RawY3*scale_y), ws.IRState.Size3 + 1, ws.IRState.Size3 + 1);
             if (ws.IRState.Found4)
-                g.DrawEllipse(new Pen(Color.Black), (int)(ws.IRState.RawX4), (int)(ws.IRState.RawY4), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
-             */ 
+                g.DrawEllipse(new Pen(Color.Black), (int)(ws.IRState.RawX4*scale_x), (int)(ws.IRState.RawY4*scale_y), ws.IRState.Size4 + 1, ws.IRState.Size4 + 1);
+            /*
             if (ws.IRState.Found1 && ws.IRState.Found2)
                 g.DrawEllipse(new Pen(Color.Green), (int)(ws.IRState.RawMidX), (int)(ws.IRState.RawMidY), 7, 7);
+            */
             return temppic;
         }
 
@@ -85,7 +81,7 @@ namespace PaintProgram
 
         public Image cut_function(Image pic, int pos_x, int pos_y, int erasersize_x, int erasersize_y)
         {
-            pixel.SetPixel(20, 30, Color.White);
+            
             Rectangle rect = new Rectangle(pos_x, pos_y, erasersize_x, erasersize_y);
             function = Graphics.FromImage(pic);
             GraphicsPath p = new GraphicsPath();
@@ -177,12 +173,19 @@ namespace PaintProgram
 
             function.DrawEllipse(new Pen(chosen), rect);
             return temppic;
-        }     
-
-        public void setNewBitmap(Bitmap b)
-        {
-            this.b = b;
         }
-        
+
+        public Image drawCalibration(WiimoteState ws, Image pic)
+        {
+            
+            g = Graphics.FromImage(pic);
+            // draw ellipse at center of bitmap for calibration;
+             g.DrawEllipse(new Pen(Color.Red), (320), (240), 20, 20);
+
+            // prompt the user 
+            // how do i do this????
+             return pic;
+        }
+
     }
 }

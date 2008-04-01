@@ -23,17 +23,16 @@ namespace PaintProgram
         private delegate void UpdateWiimoteStateDelegate(WiimoteChangedEventArgs args);
         private delegate void UpdateExtensionChangedDelegate(WiimoteExtensionChangedEventArgs args);
 
-        /*--------------------------------------------------------------
-        //Franco: let's work on a way to declare these somewhere else
-         * Possibly in Form1.Designer.cs?
-        ---------------------------------------------------------------*/
+        //calibration variable set to false only upon entering for the first time
+        bool calibration = false;
+        int offset_x = 0;  // set calibration offsets after ellipses have been drawn
+        int offset_y = 0;
 
-        Graphics eraser;  // Makes the eraser graphics which will later be a square used to erase
+        Graphics eraser;  
         public static int k = 0;
+        public int flag;
         public Color chosen = Color.Black;
-        public static int erasersize_x, erasersize_y; // Depending on what size eraser they choose, sets width and height
-        private static bool mouse_is_down = false;
-        private Point mouse_pos;
+        public static int erasersize_x, erasersize_y;         
         private Point initial_pos;
         private Point temp_pos;
         Bitmap initial_b, current_b;
@@ -44,25 +43,44 @@ namespace PaintProgram
         bool rectangle_click = false;
         bool pencil_click = false;
         bool circle_click = false;
+        bool calibration_click = false;
+        bool mouseemulation = false;
+        bool Colorboxclick = false;
 
+        public const int MOUSEEVENTF_MOVE = 0x01;
+        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        public const int MOUSEEVENTF_LEFTUP = 0x04;
+        public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        public const int MOUSEEVENTF_RIGHTUP = 0x10;
+        public const int MOUSEEVENTF_MIDDLEDOWN = 0x20;
+        public const int MOUSEEVENTF_MIDDLEUP = 0x40;
+        public const int MOUSEEVENTF_ABSOLUTE = 0x8000;
+
+        [DllImport("user32.dll")]
+        private static extern void mouse_event(
+        long dwFlags, // motion and click options
+        long dx, // horizontal position or change
+        long dy, // vertical position or change
+        long dwData, // wheel movement
+        long dwExtraInfo // application-defined information
+        );
 
         static int enter = 0;
-        string CurrentFile; // Takes the path from the currently saved or opened file
-        Image img;
-        // Bitmap b = new Bitmap(1, 1, PixelFormat.Format24bppRgb); // creates pretty much an empty Bitmap to be able to later create graphics
-        Bitmap pixel = new Bitmap(50, 35);
+        string CurrentFile; // Takes the path from the currently saved or opened file        
+        
         Wiimote wm = new Wiimote();
-        Bitmap b = new Bitmap(1280, 800);
-        //Bitmap b = new Bitmap(640, 480);
+        WiimoteState globalWs;
+
+        Bitmap pixel = new Bitmap(50, 35);
+        Bitmap b;
         Graphics g;
         graphicsLib colorbox = new graphicsLib();
-        //graphicsLib g_lib = new graphicsLib(640, 480);
-        graphicsLib g_lib = new graphicsLib(1280, 800);
+        graphicsLib g_lib;
+
         double seperation;
-        bool OutofPicBox = false;
-        bool UPorDown = false;
+        bool OutofPicBox = false;        
         bool wasSeperated = true;
-        WiimoteState globalWs;
+        
 
         public Form1()
         {
@@ -76,18 +94,13 @@ namespace PaintProgram
             pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
         }
 
-       /* protected override void MouseClick(MouseEventArgs e)
-        {
-            if (1 == 1)
-                MouseClick += MouseClick;
-        }
-        */
         public void default_clicks()
         {
             eraser_click = false;
             magnify_click = false;
             fill_click = false;
             cut_click = false;
+            calibration_click = false;
             rectangle_click = false;
             circle_click = false;
             pencil_click = false;
@@ -103,27 +116,19 @@ namespace PaintProgram
         private void Form1_Load(object sender, EventArgs e)
         {
             wm.WiimoteChanged += new WiimoteChangedEventHandler(wm_WiimoteChanged);
-            g_lib = new graphicsLib(640, 480, b); //todo: set with method
+            b = new Bitmap(800, 600);
+            g_lib = new graphicsLib(1280, 800, b);
             g = Graphics.FromImage(b);
             wm.Connect();
             wm.SetReportType(Wiimote.InputReport.IRAccel, true);
             wm.SetLEDs(false, true, true, false);
-        }
 
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
 
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             default_clicks();
-            b = new Bitmap(640, 480);
             pb_image2.SizeMode = PictureBoxSizeMode.AutoSize;
             pb_image2.Height = b.Height;
             pb_image2.Width = b.Width;
@@ -135,10 +140,12 @@ namespace PaintProgram
             pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
         }
 
+        private void editToolStripMenuItem_Click(object sender, EventArgs e) { }
+
         private void Open_Click(object sender, EventArgs e)
         {
             openFileDialog1.Title = "Open Image File";
-            openFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
+            openFileDialog1.InitialDirectory = "C:\\Documents and Settings";
             openFileDialog1.AddExtension = true;
             openFileDialog1.DefaultExt = "bmp";
             openFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg,*.jpeg)|*.jpg;*.jpeg||";
@@ -161,12 +168,11 @@ namespace PaintProgram
             panel1.CreateGraphics();
         }
 
-
         //When Save As is clicked, then the Save as dialog is opened where the user can choose what to name
         //the file
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
+            saveFileDialog1.InitialDirectory = "C:\\Documents and Settings";
             saveFileDialog1.AddExtension = true;
             saveFileDialog1.DefaultExt = "jpg";
             saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg;*.jpeg||";
@@ -184,13 +190,12 @@ namespace PaintProgram
 
         }
 
-
         //When Save is clicked, it will save the file to the current file opened, if a new file, then
         //will prompt the user to choose a filename and save
         private void Save_Click(object sender, EventArgs e)
         {
 
-            saveFileDialog1.InitialDirectory = "C:\\Documents and Settings\\EE464\\My Documents\\My Pictures";
+            saveFileDialog1.InitialDirectory = "C:\\Documents and Settings";
             saveFileDialog1.AddExtension = true;
             saveFileDialog1.DefaultExt = "jpg";
             saveFileDialog1.Filter = "Bitmap Files (*.bmp)|*.bmp|JPEG Images (*.jpg)|*.jpg;*.jpeg||";
@@ -222,145 +227,12 @@ namespace PaintProgram
             aboutToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
         }
 
-        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-        }
-
-
-
-        //When the image area is clicked, check which tool is chosen and perform the action
-        /*
-        private void pb_image2_MouseClick(object sender, MouseEventArgs e)
-        {
-            graphicsLib erase = new graphicsLib();
-            graphicsLib pencil = new graphicsLib();
-            graphicsLib fill = new graphicsLib();
-            Point current_pos = Control.MousePosition;
-            mouse_is_down = true;
-            //if the eraser tool is chosen, then call the erase function
-            if (eraser_click == true)
-            {
-                pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-            }
-            else if (pencil_click == true)
-            {
-                pb_image2.Image = pencil.pencil_function(b, temp_pos, e.X, e.Y, chosen);
-            }
-            else if (fill_click)
-            {
-                Color temp = b.GetPixel(e.X, e.Y);
-                //pb_image2.Image = fill.fill_function(b, e.X, e.Y, chosen, temp);
-            }
-            //System.Windows.Forms.Cursor.Position = new System.Drawing.Point(0, 0);
-        }
-        */
-         
-        /*
-        private void pb_image2_MouseUp(object sender, MouseEventArgs e)
-        {
-            graphicsLib shape = new graphicsLib();
-            graphicsLib erase = new graphicsLib();
-            mouse_is_down = false;
-            //This will update the image and allow for the rectangles created to stay on screen
-            if (rectangle_click)
-            {
-                b = (Bitmap)shape.rectangle_function(b, initial_pos, e.X, e.Y, chosen);
-                pb_image2.Image = b;
-            }
-            else if (circle_click)
-            {
-                b = (Bitmap)shape.circle_function(b, initial_pos, e.X, e.Y, chosen);
-                pb_image2.Image = b;
-            }
-            else if (cut_click)
-            {
-                
-            }
-            else if (eraser_click)
-            {
-                pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-            }
-        }
-        */
-          
-        /*
-        //As the mouse moves, keep erasing the area it travels through
-        private void pb_image2_MouseMove(object sender, MouseEventArgs e)
-        {
-            graphicsLib erase = new graphicsLib();
-            graphicsLib pencil = new graphicsLib();
-            graphicsLib shape = new graphicsLib();
-            current_b = initial_b;
-            ResizeImage k = new ResizeImage();
-            //k.DoResizing(pb_image2.Handle);
-            k.Resize_movement(e, pb_image2);
-            if (mouse_is_down)
-            {
-                if (eraser_click)
-                {
-                    pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - erasersize_x/2), (e.Y - erasersize_y/2), erasersize_x, erasersize_y);
-                    temp_pos.X = e.X+6; temp_pos.Y = e.Y-6;
-                }
-                else if (pencil_click)
-                {
-                    pb_image2.Image = pencil.pencil_function(b, temp_pos, (e.X), (e.Y), chosen);
-                    temp_pos.X = e.X; temp_pos.Y = e.Y;
-                }
-                else if (rectangle_click)
-                {
-                    pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
-                }
-                else if (circle_click)
-                {
-                    pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y, chosen);
-                }
-            }
-        }
-        */
-         
-        /*
-        private void pb_image2_MouseDown(object sender, MouseEventArgs e)
-        {
-            graphicsLib erase = new graphicsLib();
-            graphicsLib pencil = new graphicsLib();
-            graphicsLib shape = new graphicsLib();
-            mouse_is_down = true;
-            mouse_pos.X = e.X;
-            mouse_pos.Y = e.Y;
-            initial_b = new Bitmap(b);
-            initial_pos.X = e.X; initial_pos.Y = e.Y;
-            temp_pos.X = e.X; temp_pos.Y = e.Y;
-            ResizeImage k = new ResizeImage();
-            k.DoResizing(pb_image2.Handle);
-            //k.Resize_movement(e, pb_image2);
-            if (eraser_click)
-            {
-                pb_image2.Image = erase.eraser_function(b, temp_pos, (e.X - 6), (e.Y - 6), erasersize_x, erasersize_y);
-            }
-            else if (cut_click)
-            {
-                
-            }
-            else if (pencil_click)
-            {
-                pb_image2.Image = pencil.pencil_function(b, temp_pos, (e.X), (e.Y), chosen);
-            }
-            else if (rectangle_click)
-            {
-                pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, e.X, e.Y, chosen);
-            }
-            else if (circle_click)
-            {
-                pb_image2.Image = shape.circle_function(initial_b, initial_pos, e.X, e.Y, chosen);
-            }
-
-        }
-        */
-         
         private void Form1_Resize(object sender, EventArgs e)
         {
 
         }
+        private void groupBox1_Enter(object sender, EventArgs e) { }
+        private void saveFileDialog1_FileOk(object sender, EventArgs e) { }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -378,7 +250,6 @@ namespace PaintProgram
             printDialog1.ShowDialog();
         }
 
-
         //Following four "functions" display a little message when the user hovers over the button
 
         private void Cut_btn_MouseHover(object sender, EventArgs e)
@@ -387,7 +258,7 @@ namespace PaintProgram
             if (enter == 5)
             {
                 Cut_btn.Click += new EventHandler(Cut_btn_Click);
-                
+
                 enter = 0;
             }
             toolTip1.SetToolTip(this.Cut_btn, "Cut Tool");
@@ -467,18 +338,12 @@ namespace PaintProgram
         }
 
         private void Magnify_btn_Click(object sender, EventArgs e)
-        {
-            //Font f = new Font(new FontFamily("Times New Roman"), 10);
-            //SolidBrush bT = new SolidBrush(Color.Black);
-            //Graphics g = Graphics.FromHwnd(this.Handle);  // <=> g = CreateGraphics();
-            //Graphics g = Graphics.FromHwndInternal(this.Handle);
-
+        {            
             default_clicks();
             Magnify_btn.FlatStyle = FlatStyle.Flat;
             magnify_click = true;
 
             eraser_box.Visible = false;
-
         }
 
         private void Cut_btn_Click(object sender, EventArgs e)
@@ -566,36 +431,17 @@ namespace PaintProgram
             erasersize_x = 12;
             erasersize_y = 12;
         }
-        public const int MOUSEEVENTF_MOVE = 0x01;
-        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        public const int MOUSEEVENTF_LEFTUP = 0x04;
-        public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-        public const int MOUSEEVENTF_RIGHTUP = 0x10;
-        public const int MOUSEEVENTF_MIDDLEDOWN = 0x20;
-        public const int MOUSEEVENTF_MIDDLEUP = 0x40;
-        public const int MOUSEEVENTF_ABSOLUTE = 0x8000;
-
-        [DllImport("user32.dll")]
-        private static extern void mouse_event(
-        long dwFlags, // motion and click options
-        long dx, // horizontal position or change
-        long dy, // vertical position or change
-        long dwData, // wheel movement
-        long dwExtraInfo // application-defined information
-        );
 
         private void UpdateWiimoteState(WiimoteChangedEventArgs args)
         {
             WiimoteState ws = args.WiimoteState;
             globalWs = ws;
-            graphicsLib shape = new graphicsLib();
-            ResizeImage k = new ResizeImage();
+            graphicsLib g_lib = new graphicsLib();
+            //ResizeImage k = new ResizeImage();
             int lastIRStateX = ws.IRState.RawX1;
             int lastIRStateY = ws.IRState.RawY1;
             int currentIRstateX;
             int currentIRstateY;
-            //initial_b = new Bitmap(b);
-            //current_b = initial_b;
             if (ws.IRState.Found1)
             {
                 lastIRStateX = ws.IRState.RawX1;
@@ -603,8 +449,8 @@ namespace PaintProgram
                 if (ws.IRState.Found2)
                 {
                     seperation = Math.Sqrt(
-                            Math.Pow((ws.IRState.RawX1 - ws.IRState.RawX2), 2)+ 
-                            Math.Pow((ws.IRState.RawY1 - ws.IRState.RawY2),2));
+                            Math.Pow((ws.IRState.RawX1 - ws.IRState.RawX2), 2) +
+                            Math.Pow((ws.IRState.RawY1 - ws.IRState.RawY2), 2));
                     currentIRstateX = ws.IRState.RawMidX;
                     currentIRstateY = ws.IRState.RawMidY;
                     Seplbl.Text = "Sep: " + seperation.ToString();
@@ -627,33 +473,77 @@ namespace PaintProgram
             }
             else
             {
-                seperation = 61;
+                seperation = 0;
                 currentIRstateX = lastIRStateX;
                 currentIRstateY = lastIRStateY;
             }
-            
+
             //if (false == OutofPicBox)
-                //System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
-                pb_image2.Image = shape.drawCursorPoints(ws, b);
+            //System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
+            if (currentIRstateX <= 142)
+            {
+                currentIRstateX = (int)currentIRstateX * (1280 / 1023);
+                currentIRstateY = (int)currentIRstateY * (800 / 767);
+                Cursor.Position = new System.Drawing.Point(currentIRstateX, currentIRstateY);
+                mouseemulation = true;
+            }
+            else
+            {
+                if (Colorboxclick == false)
+                {
+                    pb_image2.Image = g_lib.drawCursorPoints(ws, b);
+                    mouseemulation = false;
+                }
+                else
+                {
+                    currentIRstateX = (int)currentIRstateX * (1280 / 1023);
+                    currentIRstateY = (int)currentIRstateY * (800 / 767);
+                    Cursor.Position = new System.Drawing.Point(currentIRstateX, currentIRstateY);
+                }
+            }
+
             //else
-              //  System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
-            
+            //  System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
+                       
             Seplbl.Text = "Sep: " + seperation.ToString();
+            
             lastIRStateX = currentIRstateX;
             lastIRStateY = currentIRstateY;
+            /*
+            if (offset_x == 0 && offset_y == 0)
+            {
+                //draw calibration circle
+                if(flag != 1)
+                    pb_image2.Image = g_lib.drawCalibration(ws, b);
+                flag = 1;
+            }
 
-            if (seperation < 60 && OutofPicBox == false)
+            if (calibration_click == true)
+            {   
+                
+                    //300 is half the size of the bitmap in the x direction 400 in the y
+                    offset_x = currentIRstateX - 320;
+                    offset_y = currentIRstateY - 240;
+                    Testlbl.Text = offset_x.ToString();
+                    Test2lbl.Text = offset_y.ToString();
+                    //never set calibration to false again
+                    calibration_click = false;
+                    b = new Bitmap(800, 600);
+                    pb_image2.Image = b;
+            }
+            */
+            if (seperation > 60 && mouseemulation == false)
             {
                 if (eraser_click)
                 {
                     if (wasSeperated)
                     {
                         temp_pos.X = currentIRstateX; temp_pos.Y = currentIRstateY;
-                        pb_image2.Image = shape.eraser_function(b, temp_pos, (currentIRstateX - 1), (currentIRstateY - 1), erasersize_x, erasersize_y);
+                        pb_image2.Image = g_lib.eraser_function(b, temp_pos, (currentIRstateX - 1), (currentIRstateY - 1), erasersize_x, erasersize_y);
                     }
                     else
                     {
-                        pb_image2.Image = shape.eraser_function(b, temp_pos, (currentIRstateX), (currentIRstateY), erasersize_x, erasersize_y);
+                        pb_image2.Image = g_lib.eraser_function(b, temp_pos, (currentIRstateX), (currentIRstateY), erasersize_x, erasersize_y);
                         temp_pos.X = currentIRstateX; temp_pos.Y = currentIRstateY;
                     }
                 }
@@ -662,13 +552,13 @@ namespace PaintProgram
                 {
                     if (wasSeperated)
                     {
-                        temp_pos.X = currentIRstateX; temp_pos.Y = currentIRstateY;
-                        pb_image2.Image = shape.pencil_function(b, temp_pos, (currentIRstateX - 1), (currentIRstateY - 1), chosen);
+                        temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.pencil_function(b, temp_pos, (currentIRstateX - 143), (currentIRstateY - 1), chosen);
                     }
                     else
                     {
-                        pb_image2.Image = shape.pencil_function(b, temp_pos, (currentIRstateX), (currentIRstateY), chosen);
-                        temp_pos.X = currentIRstateX; temp_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.pencil_function(b, temp_pos, (currentIRstateX - 142), (currentIRstateY), chosen);
+                        temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
                     }
                 }
 
@@ -678,33 +568,34 @@ namespace PaintProgram
                     {
                         initial_b = new Bitmap(b);
                         initial_pos.X = currentIRstateX; initial_pos.Y = currentIRstateY;
-                        pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        pb_image2.Image = g_lib.rectangle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
                     }
                     else
                     {
                         current_b = initial_b;
-                        pb_image2.Image = shape.rectangle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        pb_image2.Image = g_lib.rectangle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
                     }
                 }
+
                 else if (circle_click)
                 {
                     if (wasSeperated)
                     {
                         initial_b = new Bitmap(b);
                         initial_pos.X = currentIRstateX; initial_pos.Y = currentIRstateY;
-                        pb_image2.Image = shape.circle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        pb_image2.Image = g_lib.circle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
                     }
                     else
                     {
                         current_b = initial_b;
-                        pb_image2.Image = shape.circle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        pb_image2.Image = g_lib.circle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
                     }
                 }
                 wasSeperated = false;
                 //end
                 //}
             }
-            else if(seperation < 60 && OutofPicBox == true)//outside picturebox
+            else if (seperation > 60 && mouseemulation == true)//outside picturebox
             {
                 mouse_event(MOUSEEVENTF_LEFTDOWN, currentIRstateX, currentIRstateY, 0, 0);
                 mouse_event(MOUSEEVENTF_LEFTUP, currentIRstateX, currentIRstateY, 0, 0);
@@ -716,7 +607,7 @@ namespace PaintProgram
                 {
                     if (!wasSeperated)
                     {
-                        b = (Bitmap)shape.rectangle_function(b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        b = (Bitmap)g_lib.rectangle_function(b, initial_pos, currentIRstateX, currentIRstateY, chosen);
                         pb_image2.Image = b;
                     }
                 }
@@ -724,25 +615,13 @@ namespace PaintProgram
                 {
                     if (!wasSeperated)
                     {
-                        b = (Bitmap)shape.circle_function(b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        b = (Bitmap)g_lib.circle_function(b, initial_pos, currentIRstateX, currentIRstateY, chosen);
                         pb_image2.Image = b;
                     }
                 }
                 wasSeperated = true;
             }
-            /*else
-            {
-                if (UPorDown)
-                {
-                    mouse_event(MOUSEEVENTF_LEFTUP, currentIRstateX, currentIRstateY, 0, 0);
-                    UPorDown = false;
-                    if (rectangle_click || circle_click)
-                        pb_image2.Image = initial_b;
-                }
-                mouse_is_down = false;
-            }
-            */
-            //System.Windows.Forms.Cursor.Position = new System.Drawing.Point(currentIRstateX, currentIRstateY);
+            //rms.Cursor.Position = new System.Drawing.Point(currentIRstateX, currentIRstateY);
         }
 
         private void wm_WiimoteChanged(object sender, WiimoteChangedEventArgs args)
@@ -757,44 +636,24 @@ namespace PaintProgram
 
         private void pb_colors_Click(object sender, EventArgs e)
         {
+            Colorboxclick = true;
+            mouseemulation = true;
             colorDialog1.ShowDialog();
             chosen = colorDialog1.Color;
             pb_colors.Image = colorbox.show_color_chosen(pixel, chosen);
-
+            Colorboxclick = false;
         }
 
         private void pb_image2_MouseEnter(object sender, EventArgs e)
         {
             OutofPicBox = false;
-            Testlbl.Text = "Mouse entered Picture Box";
-        }
-
-        private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void pb_image2_MouseLeave(object sender, EventArgs e)
         {
             OutofPicBox = true;
-            mouse_is_down = false;
-            Testlbl.Text = "Mouse left Picture Box";
         }
 
 
-        /*private void Rectangle_btn_MouseMove(object sender, MouseEventArgs e)
-        {
-            //WiimoteState ws = args.WiimoteState;
-            EventArgs nothing = new EventArgs();
-            double seperation = Math.Abs(Math.Sqrt(
-                (globalWs.IRState.RawX1 - globalWs.IRState.RawX2) ^ 2 + (globalWs.IRState.RawY1 - globalWs.IRState.RawY2) ^ 2));
-
-
-            if (seperation < 10)
-            {
-                rectangle_btn_Click(sender, e);
-                //System.Windows.Forms.Control.Click.Button = true;
-            }
-        }*/
-    }      
-   }
+    }
+}
