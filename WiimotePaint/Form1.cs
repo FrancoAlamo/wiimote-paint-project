@@ -24,28 +24,32 @@ namespace PaintProgram
         private delegate void UpdateExtensionChangedDelegate(WiimoteExtensionChangedEventArgs args);
 
         //calibration variable set to false only upon entering for the first time
-        bool calibration = false;
-        int offset_x = 0;  // set calibration offsets after ellipses have been drawn
-        int offset_y = 0;
+        //bool calibration = false;
+        //int offset_x = 0;  // set calibration offsets after ellipses have been drawn
+        //int offset_y = 0;
 
         Graphics eraser;  
         public static int k = 0;
         public int flag;
         public Color chosen = Color.Black;
         public static int erasersize_x, erasersize_y;         
-        private Point initial_pos;
-        private Point temp_pos;
-        Bitmap initial_b, current_b;
+        private Point initial_pos;  //Initial position for LED's 1 and 2
+        private Point initial_pos2; //Initial position for LED's 3 and 4
+        private Point temp_pos;     //Hold temporary position for LED's 1 and 2
+        private Point temp_pos2;    //Hold temporary position for LED's 3 and 4
+        Bitmap initial_b, current_b, initial_b2, current_b2;
         bool eraser_click = false;
-        bool magnify_click = false;
+        bool line_click = false;
         bool fill_click = false;
         bool cut_click = false;
+        bool Paintbrush_click = false;
         bool rectangle_click = false;
         bool pencil_click = false;
         bool circle_click = false;
         bool calibration_click = false;
         bool mouseemulation = false;
         bool Colorboxclick = false;
+        bool filledrect; // True if rectangle chosen is the fill one
 
         public const int MOUSEEVENTF_MOVE = 0x01;
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
@@ -77,9 +81,11 @@ namespace PaintProgram
         graphicsLib colorbox = new graphicsLib();
         graphicsLib g_lib;
 
-        double seperation;
+        double separation;   // separation between LED1 and LED2
+        double separation2;  // separation between LED3 and LED4
         bool OutofPicBox = false;        
-        bool wasSeperated = true;
+        bool wasSeparated = true;  // Set to True if LED1 and LED2 were separated
+        bool wasSeparated2 = true; // Set to True if LED3 and LED4 were separated
         
 
         public Form1()
@@ -89,6 +95,8 @@ namespace PaintProgram
             default_clicks();
             eraser1_panel.ForeColor = Color.Blue;
             eraser1_panel.BackColor = Color.DarkBlue;
+            RectUnfilledPnl.ForeColor = Color.Blue;
+            RectUnfilledPnl.BackColor = Color.DarkBlue;
             erasersize_x = 4;
             erasersize_y = 4;
             pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
@@ -97,7 +105,8 @@ namespace PaintProgram
         public void default_clicks()
         {
             eraser_click = false;
-            magnify_click = false;
+            line_click = false;
+            Paintbrush_click = false;
             fill_click = false;
             cut_click = false;
             calibration_click = false;
@@ -105,8 +114,9 @@ namespace PaintProgram
             circle_click = false;
             pencil_click = false;
             eraser_box.Visible = false;
+            RectangleGrpBox.Visible = false;
             Eraser_btn.FlatStyle = FlatStyle.Standard;
-            Magnify_btn.FlatStyle = FlatStyle.Standard;
+            Line_btn.FlatStyle = FlatStyle.Standard;
             Fill_btn.FlatStyle = FlatStyle.Standard;
             Cut_btn.FlatStyle = FlatStyle.Standard;
             Rectangle_btn.FlatStyle = FlatStyle.Standard;
@@ -137,6 +147,8 @@ namespace PaintProgram
             eraser1_panel.BackColor = Color.DarkBlue;
             erasersize_x = 4;
             erasersize_y = 4;
+            RectUnfilledPnl.ForeColor = Color.Blue;
+            RectUnfilledPnl.BackColor = Color.DarkBlue;
             pb_colors.Image = colorbox.show_color_chosen(pixel, Color.Black);
         }
 
@@ -237,7 +249,9 @@ namespace PaintProgram
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 about = new AboutBox1();
+            mouseemulation = true;
             about.ShowDialog();
+            mouseemulation = false;
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -265,9 +279,9 @@ namespace PaintProgram
 
         }
 
-        private void Magnify_btn_MouseHover(object sender, EventArgs e)
+        private void Line_btn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.Magnify_btn, "Magnify Tool");
+            toolTip1.SetToolTip(this.Line_btn, "Draw Line Tool");
         }
 
         private void Eraser_btn_MouseHover(object sender, EventArgs e)
@@ -337,13 +351,18 @@ namespace PaintProgram
             eraser = Graphics.FromImage(b);
         }
 
-        private void Magnify_btn_Click(object sender, EventArgs e)
+        private void Line_btn_Click(object sender, EventArgs e)
         {            
             default_clicks();
-            Magnify_btn.FlatStyle = FlatStyle.Flat;
-            magnify_click = true;
+            Line_btn.FlatStyle = FlatStyle.Flat;
+            line_click = true;
+        }
 
-            eraser_box.Visible = false;
+        private void PaintBrushBtn_MouseClick(object sender, MouseEventArgs e)
+        {
+            default_clicks();
+            PaintBrushBtn.FlatStyle = FlatStyle.Flat;
+            Paintbrush_click = true;
         }
 
         private void Cut_btn_Click(object sender, EventArgs e)
@@ -357,6 +376,9 @@ namespace PaintProgram
         private void rectangle_btn_Click(object sender, EventArgs e)
         {
             default_clicks();
+            RectUnfilledPnl.Visible = true;
+            RectFilledPnl.Visible = true;
+            RectangleGrpBox.Visible = true;
             rectangle_click = true;
             Rectangle_btn.FlatStyle = FlatStyle.Flat;
         }
@@ -432,32 +454,54 @@ namespace PaintProgram
             erasersize_y = 12;
         }
 
+        private void RectUnfilledPnl_MouseClick(object sender, MouseEventArgs e)
+        {
+            RectFilledPnl.ForeColor = Color.LightGray;
+            RectFilledPnl.BackColor = Color.LightGray;
+            RectUnfilledPnl.ForeColor = Color.Blue;
+            RectUnfilledPnl.BackColor = Color.DarkBlue;
+            filledrect = false;
+        }
+
+        private void RectFilledPnl_MouseClick(object sender, MouseEventArgs e)
+        {
+            RectUnfilledPnl.ForeColor = Color.LightGray;
+            RectUnfilledPnl.BackColor = Color.LightGray;
+            RectFilledPnl.ForeColor = Color.Blue;
+            RectFilledPnl.BackColor = Color.DarkBlue;
+            filledrect = true;
+        }
+
         private void UpdateWiimoteState(WiimoteChangedEventArgs args)
         {
             WiimoteState ws = args.WiimoteState;
             globalWs = ws;
             graphicsLib g_lib = new graphicsLib();
             //ResizeImage k = new ResizeImage();
-            int lastIRStateX = ws.IRState.RawX1;
+            int lastIRStateX = ws.IRState.RawX1;  // Keep last state from LED's 1 and 2
             int lastIRStateY = ws.IRState.RawY1;
-            int currentIRstateX;
+            int lastIRStateX2 = ws.IRState.RawX3; // Keep last state from LED's 3 and 4
+            int lastIRStateY2 = ws.IRState.RawY3;
+            int currentIRstateX;                  // Current IR State of LED's 1 and 2
             int currentIRstateY;
+            int currentIRstateX2;                 // Current IR State of LED's 3 and 4
+            int currentIRstateY2;
             if (ws.IRState.Found1)
             {
                 lastIRStateX = ws.IRState.RawX1;
                 lastIRStateY = ws.IRState.RawY1;
                 if (ws.IRState.Found2)
                 {
-                    seperation = Math.Sqrt(
+                    separation = Math.Sqrt(
                             Math.Pow((ws.IRState.RawX1 - ws.IRState.RawX2), 2) +
                             Math.Pow((ws.IRState.RawY1 - ws.IRState.RawY2), 2));
-                    currentIRstateX = ws.IRState.RawMidX;
-                    currentIRstateY = ws.IRState.RawMidY;
-                    Seplbl.Text = "Sep: " + seperation.ToString();
+                    currentIRstateX = (int)((ws.IRState.RawX1 + ws.IRState.RawX2) / 2);
+                    currentIRstateY = (int)((ws.IRState.RawY1 + ws.IRState.RawY2) / 2);
+                    Seplbl.Text = "Sep: " + separation.ToString();
                 }
                 else
                 {
-                    seperation = 0;
+                    separation = 0;
                     currentIRstateX = ws.IRState.RawX1;
                     currentIRstateY = ws.IRState.RawY1;
                 }
@@ -467,15 +511,51 @@ namespace PaintProgram
             {
                 lastIRStateX = ws.IRState.RawX2;
                 lastIRStateY = ws.IRState.RawY2;
-                seperation = 0;
+                separation = 0;
                 currentIRstateX = ws.IRState.RawX2;
                 currentIRstateY = ws.IRState.RawY2;
             }
             else
             {
-                seperation = 0;
+                separation = 0;
                 currentIRstateX = lastIRStateX;
                 currentIRstateY = lastIRStateY;
+            }
+
+            if (ws.IRState.Found3)
+            {
+                lastIRStateX2 = ws.IRState.RawX3;
+                lastIRStateY2 = ws.IRState.RawY3;
+                if (ws.IRState.Found4)
+                {
+                    separation2 = Math.Sqrt(
+                            Math.Pow((ws.IRState.RawX3 - ws.IRState.RawX4), 2) +
+                            Math.Pow((ws.IRState.RawY3 - ws.IRState.RawY4), 2));
+                    currentIRstateX2 = (int)((ws.IRState.RawX3 + ws.IRState.RawX4) / 2);
+                    currentIRstateY2 = (int)((ws.IRState.RawY3 + ws.IRState.RawY4) / 2);
+                    Testlbl.Text = "Sep: " + separation2.ToString();
+                }
+                else
+                {
+                    separation2 = 0;
+                    currentIRstateX2 = ws.IRState.RawX3;
+                    currentIRstateY2 = ws.IRState.RawY3;
+                }
+            }
+
+            else if (ws.IRState.Found4)
+            {
+                lastIRStateX2 = ws.IRState.RawX4;
+                lastIRStateY2 = ws.IRState.RawY4;
+                separation2 = 0;
+                currentIRstateX2 = ws.IRState.RawX4;
+                currentIRstateY2 = ws.IRState.RawY4;
+            }
+            else
+            {
+                separation2 = 0;
+                currentIRstateX2 = lastIRStateX2;
+                currentIRstateY2 = lastIRStateY2;
             }
 
             //if (false == OutofPicBox)
@@ -505,10 +585,12 @@ namespace PaintProgram
             //else
             //  System.Windows.Forms.Cursor.Position = new System.Drawing.Point((currentIRstateX), (currentIRstateY));
                        
-            Seplbl.Text = "Sep: " + seperation.ToString();
+            Seplbl.Text = "Sep: " + separation.ToString();
             
-            lastIRStateX = currentIRstateX;
+            lastIRStateX = currentIRstateX;   //Saves values in the case that both LED's (1 and 2) are missing
             lastIRStateY = currentIRstateY;
+            lastIRStateX2 = currentIRstateX2; //Saves values in the case that both LED's (3 and 4) are missing
+            lastIRStateY2 = currentIRstateY2;
             /*
             if (offset_x == 0 && offset_y == 0)
             {
@@ -532,25 +614,33 @@ namespace PaintProgram
                     pb_image2.Image = b;
             }
             */
-            if (seperation > 60 && mouseemulation == false)
+            if (currentIRstateX > currentIRstateX2)
+            {
+                currentIRstateX = currentIRstateX2;
+                currentIRstateX2 = lastIRStateX;
+                currentIRstateY = currentIRstateY2;
+                currentIRstateY2 = lastIRStateY;
+            }
+
+            if (separation > 80 && mouseemulation == false)
             {
                 if (eraser_click)
                 {
-                    if (wasSeperated)
+                    if (wasSeparated)
                     {
-                        temp_pos.X = currentIRstateX; temp_pos.Y = currentIRstateY;
-                        pb_image2.Image = g_lib.eraser_function(b, temp_pos, (currentIRstateX - 1), (currentIRstateY - 1), erasersize_x, erasersize_y);
+                        temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.eraser_function(b, temp_pos, (currentIRstateX - 143), (currentIRstateY - 1), erasersize_x, erasersize_y);
                     }
                     else
                     {
-                        pb_image2.Image = g_lib.eraser_function(b, temp_pos, (currentIRstateX), (currentIRstateY), erasersize_x, erasersize_y);
-                        temp_pos.X = currentIRstateX; temp_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.eraser_function(b, temp_pos, (currentIRstateX - 142), (currentIRstateY), erasersize_x, erasersize_y);
+                        temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
                     }
                 }
 
                 else if (pencil_click)
                 {
-                    if (wasSeperated)
+                    if (wasSeparated)
                     {
                         temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
                         pb_image2.Image = g_lib.pencil_function(b, temp_pos, (currentIRstateX - 143), (currentIRstateY - 1), chosen);
@@ -562,66 +652,166 @@ namespace PaintProgram
                     }
                 }
 
-                else if (rectangle_click)
+                else if (Paintbrush_click)
                 {
-                    if (wasSeperated)
+                    if (wasSeparated)
+                    {
+                        temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.paint_function(b, temp_pos, (currentIRstateX - 143), (currentIRstateY - 1), chosen);
+                    }
+                    else
+                    {
+                        pb_image2.Image = g_lib.paint_function(b, temp_pos, (currentIRstateX - 142), (currentIRstateY), chosen);
+                        temp_pos.X = currentIRstateX - 142; temp_pos.Y = currentIRstateY;
+                    }
+                }
+
+                else if (line_click)
+                {
+                    if (wasSeparated)
                     {
                         initial_b = new Bitmap(b);
-                        initial_pos.X = currentIRstateX; initial_pos.Y = currentIRstateY;
-                        pb_image2.Image = g_lib.rectangle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        initial_pos.X = currentIRstateX - 142; initial_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.line_function(initial_b, initial_pos, currentIRstateX - 143, currentIRstateY, chosen);
                     }
                     else
                     {
                         current_b = initial_b;
-                        pb_image2.Image = g_lib.rectangle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        pb_image2.Image = g_lib.line_function(initial_b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen);
+                    }
+                }
+
+                else if (rectangle_click)
+                {
+                    if (wasSeparated)
+                    {
+                        initial_b = new Bitmap(b);
+                        initial_pos.X = currentIRstateX - 142; initial_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.rectangle_function(initial_b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen, filledrect);
+                    }
+                    else
+                    {
+                        current_b = initial_b;
+                        pb_image2.Image = g_lib.rectangle_function(initial_b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen, filledrect);
                     }
                 }
 
                 else if (circle_click)
                 {
-                    if (wasSeperated)
+                    if (wasSeparated)
                     {
                         initial_b = new Bitmap(b);
-                        initial_pos.X = currentIRstateX; initial_pos.Y = currentIRstateY;
-                        pb_image2.Image = g_lib.circle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        initial_pos.X = currentIRstateX - 142; initial_pos.Y = currentIRstateY;
+                        pb_image2.Image = g_lib.circle_function(initial_b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen);
                     }
                     else
                     {
                         current_b = initial_b;
-                        pb_image2.Image = g_lib.circle_function(initial_b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        pb_image2.Image = g_lib.circle_function(initial_b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen);
                     }
                 }
-                wasSeperated = false;
+                wasSeparated = false;
                 //end
                 //}
             }
-            else if (seperation > 60 && mouseemulation == true)//outside picturebox
+            else if (separation > 80 && mouseemulation == true)//outside picturebox
             {
                 mouse_event(MOUSEEVENTF_LEFTDOWN, currentIRstateX, currentIRstateY, 0, 0);
                 mouse_event(MOUSEEVENTF_LEFTUP, currentIRstateX, currentIRstateY, 0, 0);
-                wasSeperated = false;
+                wasSeparated = false;
             }
             else
             {
                 if (rectangle_click)
                 {
-                    if (!wasSeperated)
+                    if (!wasSeparated)
                     {
-                        b = (Bitmap)g_lib.rectangle_function(b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        b = (Bitmap)g_lib.rectangle_function(b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen, filledrect);
                         pb_image2.Image = b;
                     }
                 }
                 else if (circle_click)
                 {
-                    if (!wasSeperated)
+                    if (!wasSeparated)
                     {
-                        b = (Bitmap)g_lib.circle_function(b, initial_pos, currentIRstateX, currentIRstateY, chosen);
+                        b = (Bitmap)g_lib.circle_function(b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen);
                         pb_image2.Image = b;
                     }
                 }
-                wasSeperated = true;
+                else if (line_click)
+                {
+                    if (!wasSeparated)
+                    {
+                        b = (Bitmap)g_lib.line_function(b, initial_pos, currentIRstateX - 142, currentIRstateY, chosen);
+                        pb_image2.Image = b;
+                    }
+                }
+
+                wasSeparated = true;
             }
-            //rms.Cursor.Position = new System.Drawing.Point(currentIRstateX, currentIRstateY);
+            if (separation2 > 80)
+            {
+                if (eraser_click)
+                {
+                    if (wasSeparated2)
+                    {
+                        temp_pos2.X = currentIRstateX2; temp_pos2.Y = currentIRstateY2;
+                        pb_image2.Image = g_lib.eraser_function(b, temp_pos2, (currentIRstateX2 - 1), (currentIRstateY2 - 1), erasersize_x, erasersize_y);
+                    }
+                    else
+                    {
+                        pb_image2.Image = g_lib.eraser_function(b, temp_pos2, (currentIRstateX2), (currentIRstateY2), erasersize_x, erasersize_y);
+                        temp_pos2.X = currentIRstateX2; temp_pos2.Y = currentIRstateY2;
+                    }
+                }
+
+                else if (pencil_click)
+                {
+                    if (wasSeparated2)
+                    {
+                        temp_pos2.X = currentIRstateX2; temp_pos2.Y = currentIRstateY2;
+                        pb_image2.Image = g_lib.pencil_function(b, temp_pos2, (currentIRstateX2 - 1), (currentIRstateY2 - 1), chosen);
+                    }
+                    else
+                    {
+                        pb_image2.Image = g_lib.pencil_function(b, temp_pos2, (currentIRstateX2), (currentIRstateY2), chosen);
+                        temp_pos2.X = currentIRstateX2 - 142; temp_pos2.Y = currentIRstateY2;
+                    }
+                }
+
+                else if (Paintbrush_click)
+                {
+                    if (wasSeparated2)
+                    {
+                        temp_pos2.X = currentIRstateX2; temp_pos2.Y = currentIRstateY2;
+                        pb_image2.Image = g_lib.paint_function(b, temp_pos2, (currentIRstateX2 - 1), (currentIRstateY2 - 1), chosen);
+                    }
+                    else
+                    {
+                        pb_image2.Image = g_lib.paint_function(b, temp_pos2, (currentIRstateX2), (currentIRstateY2), chosen);
+                        temp_pos2.X = currentIRstateX2; temp_pos2.Y = currentIRstateY2;
+                    }
+                }
+
+                else if (line_click)
+                {
+                    if (wasSeparated2)
+                    {
+                        initial_b2 = new Bitmap(b);
+                        initial_pos2.X = currentIRstateX2; initial_pos2.Y = currentIRstateY2;
+                        pb_image2.Image = g_lib.line_function(initial_b2, initial_pos2, currentIRstateX2, currentIRstateY2, chosen);
+                    }
+                    else
+                    {
+                        current_b2 = initial_b2;
+                        pb_image2.Image = g_lib.line_function(initial_b2, initial_pos2, currentIRstateX2, currentIRstateY2, chosen);
+                    }
+                }
+            }
+            else
+                wasSeparated2 = true;
+
+
         }
 
         private void wm_WiimoteChanged(object sender, WiimoteChangedEventArgs args)
@@ -653,6 +843,15 @@ namespace PaintProgram
         {
             OutofPicBox = true;
         }
+
+        private void RectangleGrpBox_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+
 
 
     }
